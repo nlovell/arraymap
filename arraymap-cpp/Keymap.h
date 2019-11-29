@@ -66,10 +66,12 @@ public:
 	/*
 	 *	Method to get the value stored in the map based on the Key
 	 *	param: K, key			- the key to identify the value
-	 *	return: V				- the value to return
+	 *	return: V				- the value to return, or null
 	 */
 	V getValue(K key) {
+		if(getIndex(key)!=NULL)
 				return valArray[getIndex(key)];
+		return NULL;
 	};
 
 	int getIndex(K key)

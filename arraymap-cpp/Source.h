@@ -6,6 +6,10 @@ int main() {
 	std::cout << "Test run!" << std::endl;
 	Keymap<int, char>* km = new Keymap<int, char>;
 	
+	//Try and get a null value
+	std::cout << km->getValue(1) << std::endl;
+
+
 	//Insert 1 and find it
 	std::cout << "inserting 1:a" << std::endl;
 	km->insertPair(1, 'a');
