@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include "Keymap.h"
-#include "ArrayLength.h"
 int main() {
 
 	std::cout << "Test run!" << std::endl;

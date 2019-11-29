@@ -119,8 +119,8 @@ public:
 		capacity++;						
 
 		//create larger arrays
-		K* tempKeyA = new int[capacity];
-		V* tempValA = new int[capacity];
+		K *tempKeyA = new K[capacity];
+		V *tempValA = new V[capacity];
 		for (int i = 0; i < capacity-1; i++) {
 
 			//copy across values to the new arrays
