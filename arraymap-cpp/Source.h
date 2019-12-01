@@ -16,6 +16,12 @@ int main() {
 	std::cout << "Get val1: " << intCharKeymap->getValue(1) << std::endl;
 	std::cout << std::endl;
 
+	//Attempt to insert 1 again, and find it
+	std::cout << "inserting 1:z" << std::endl;
+	intCharKeymap->insertPair(1, 'z');
+	std::cout << "Get val1: " << intCharKeymap->getValue(1) << std::endl;
+	std::cout << std::endl;
+
 	//Insert 2, and find both 1 and 2
 	std::cout << "inserting 2:b" << std::endl;
 	intCharKeymap->insertPair(2, 'b');

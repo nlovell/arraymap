@@ -43,17 +43,19 @@ public:
 	 *			V, theValue		- the value to insert
 	 */
 	void insertPair(K key, V value) {
-		if (lnth+1 == capacity) {
-			enlargeMap();
-			std::cout << "EMBIGGEN" << std::endl;
-		}
-		try {
-			int insertLoc = capacity - 1;
-			keyArray[insertLoc] = key;
-			valArray[insertLoc] = value;
-			lnth++;
-		}
-		catch (...) {}
+		if (isKeyUnique(key)) {
+			if (lnth + 1 == capacity) {
+				enlargeMap();
+				std::cout << "EMBIGGEN" << std::endl;
+			}
+			try {
+				int insertLoc = capacity - 1;
+				keyArray[insertLoc] = key;
+				valArray[insertLoc] = value;
+				lnth++;
+			}
+			catch (...) {}
+		};
 	};
 
 	/*
@@ -69,7 +71,7 @@ public:
 			int insert = 0;
 			int newCapacity = capacity - 1;
 
-			std::cout << "Attempting to remove item from array" << std::endl
+			std::cout << "Attempting to remove item from array" << std::endl;
 
 			//create smaller arrays
 			K* tempKeyA = new K[newCapacity];
@@ -120,11 +122,26 @@ public:
 	 *	return: bool			- true if values updated
 	 */
 	bool updatePair(K theKey, V theValue) {
-
 		valArray[getIndex(theKey)] = theValue;
-
 		return true;
+	};
 
+	/*
+	 *	Method to ensure key does not exist in current key array
+	 *	param:	k, theKey		- the key to check
+	 *
+	 *	return: bool			- return true if theKey is unique and valid
+	 */
+	bool isKeyUnique(K theKey) {
+		//Iterate through array length
+		for (int i = 0; i < capacity; i++) {
+			if (theKey == keyArray[i]) {
+				std::cout << "Key found in current key set. Skipping insert." << std::endl;
+				return false;
+			}
+		}
+		std::cout << "Key not found in current key set. Attempting insertion." << std::endl;
+		return true;
 	};
 
 
@@ -158,16 +175,6 @@ public:
 		return NULL;
 	}
 
-	/*
-	 *	Method to ensure key does not exist in current key array
-	 *	param:	k, theKey		- the key to check
-	 *
-	 *	return: bool			- return true if theKey is unique and valid
-	 */
-	bool checkKeyValue(K theKey) {
-		return true;
-	};
-	
 	/*
 	 *	Method to enlarge the size of both arrays by one
 	 *	return: int				- new size of map
