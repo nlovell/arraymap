@@ -157,6 +157,11 @@ public:
 		return NULL;
 	};
 
+	/*
+	 * Method to get the index of a given key value
+	 * param:	K, key		- The key to find the index of.
+	 * return:	int			- The index of the key, or 0/NULL if not available.
+	 */
 	int getIndex(K key)
 	{
 		std::cout << "Seaching for " << key << std::endl;
