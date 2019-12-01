@@ -9,7 +9,7 @@ private:
 	int capacity = 1;
 
 	/* The length of the array*/
-	int lnth = 0;
+	int lnth = 1;
 
 public:
 
@@ -21,6 +21,9 @@ public:
 
 public:
 
+	int getCapacity() {
+		return capacity;
+	};
 
 	/*
 	 *	Method to insert a new key-value pair into the map
@@ -45,7 +48,54 @@ public:
 	 *	Method to remove a key-value pair based on the key
 	 *	param: K, theKey		- the key to remove
 	 */
-	void removePair(K theKey) {};
+	int removePair(K theKey) {
+	
+		int index = getIndex(theKey);
+		int insert = 0;
+		int newCapacity = capacity - 1;
+
+		std::cout << "Attempting to remove item from array" << std::endl;
+
+		
+
+		//create smaller arrays
+		K* tempKeyA = new K[newCapacity];
+		V* tempValA = new V[newCapacity];
+
+		//Iterate through old array length
+		for (int i = 0; i < capacity; i++) {
+			std::cout << insert << " <- insert index" << std::endl;
+			std::cout << i << " <- fetch index" << std::endl;
+
+			if (i == index) {
+				std::cout << "Item to remove skipped at index " << index << std::endl;
+			}
+			else {
+				//copy across values to the new arrays
+				K key = keyArray[i];
+				V val = valArray[i];
+
+				std::cout << "Copying " << val << " to " << key << std::endl;
+				tempKeyA[insert] = key;
+				tempValA[insert] = val;
+				insert++;
+			}
+		}
+		// decrement array size
+		capacity = newCapacity;
+
+		//destroy the old arrays.
+		delete[] keyArray;
+		delete[] valArray;
+
+		//assign new arrays as the old arrays
+		valArray = tempValA;
+		keyArray = tempKeyA;
+
+		std::cout << "Deletion didn't fail" << std::endl;
+		return capacity;
+	
+	};
 
 	/*
 	 *	Method to update a key-value pair based on the key
