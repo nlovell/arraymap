@@ -1,25 +1,30 @@
 #pragma once
 #include <stddef.h>
 #include <array>
+
+/*
+	A class to map key:value pairs, built upon static C++ arrays.
+	types:	K			- The type of Key to be used
+			V			- The type of Value to be used
+	Designed and implemented by Student 20107104674840, November 2019.
+*/
 template <typename K, typename V>
 class Keymap
 {
 private:
-	/* The capacity of the array */
+	/* The capacity of the array. */
 	int capacity = 1;
 
-	/* The length of the array*/
+	/* The length of the array. */
 	int lnth = 0;
 
-	/* The permanent offset for writing to the array.*/
+	/* The permanent offset for writing to the array. */
 	const int offset = 1;
 
-public:
-
-	/* The array of Keys to be used within the Map */
+	/* The array of Keys to be used within the Map. */
 	K* keyArray = new K[1];
 
-	/* The array of Values to be used within the Map */
+	/* The array of Values to be used within the Map. */
 	V* valArray = new V[1];
 
 public:
@@ -53,7 +58,7 @@ public:
 
 	/*
 	 *	Method to remove a key-value pair based on the key
-	 *	param: K, theKey		- the key to remove
+	 *	param:	K, theKey		- the key to remove
 	 */
 	int removePair(K theKey) {
 	
@@ -64,9 +69,7 @@ public:
 			int insert = 0;
 			int newCapacity = capacity - 1;
 
-			std::cout << "Attempting to remove item from array" << std::endl;
-
-
+			std::cout << "Attempting to remove item from array" << std::endl
 
 			//create smaller arrays
 			K* tempKeyA = new K[newCapacity];
@@ -113,7 +116,7 @@ public:
 	 *	Method to update a key-value pair based on the key
 	 *	param:	K, theKey		- the key to identify the value
 	 *			V, theValue		- the value to update
-
+	 *
 	 *	return: bool			- true if values updated
 	 */
 	bool updatePair(K theKey, V theValue) {
@@ -128,6 +131,7 @@ public:
 	/*
 	 *	Method to get the value stored in the map based on the Key
 	 *	param: K, key			- the key to identify the value
+	 *
 	 *	return: V				- the value to return, or null
 	 */
 	V getValue(K key) {
@@ -157,6 +161,7 @@ public:
 	/*
 	 *	Method to ensure key does not exist in current key array
 	 *	param:	k, theKey		- the key to check
+	 *
 	 *	return: bool			- return true if theKey is unique and valid
 	 */
 	bool checkKeyValue(K theKey) {
