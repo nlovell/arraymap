@@ -9,7 +9,10 @@ private:
 	int capacity = 1;
 
 	/* The length of the array*/
-	int lnth = 1;
+	int lnth = 0;
+
+	/* The permanent offset for writing to the array.*/
+	const int offset = 1;
 
 public:
 
@@ -31,7 +34,7 @@ public:
 	 *			V, theValue		- the value to insert
 	 */
 	void insertPair(K key, V value) {
-		if (lnth == capacity) {
+		if (lnth+1 == capacity) {
 			enlargeMap();
 			std::cout << "EMBIGGEN" << std::endl;
 		}
@@ -51,50 +54,55 @@ public:
 	int removePair(K theKey) {
 	
 		int index = getIndex(theKey);
-		int insert = 0;
-		int newCapacity = capacity - 1;
 
-		std::cout << "Attempting to remove item from array" << std::endl;
+		//Index 0 is always empty, as it equates to NULL.
+		if (index > 0) {
+			int insert = 0;
+			int newCapacity = capacity - 1;
 
-		
+			std::cout << "Attempting to remove item from array" << std::endl;
 
-		//create smaller arrays
-		K* tempKeyA = new K[newCapacity];
-		V* tempValA = new V[newCapacity];
 
-		//Iterate through old array length
-		for (int i = 0; i < capacity; i++) {
-			std::cout << insert << " <- insert index" << std::endl;
-			std::cout << i << " <- fetch index" << std::endl;
 
-			if (i == index) {
-				std::cout << "Item to remove skipped at index " << index << std::endl;
+			//create smaller arrays
+			K* tempKeyA = new K[newCapacity];
+			V* tempValA = new V[newCapacity];
+
+			//Iterate through old array length
+			for (int i = 0; i < capacity; i++) {
+				std::cout << insert << " <- insert index" << std::endl;
+				std::cout << i << " <- fetch index" << std::endl;
+
+				//Skip copying the item to remove
+				if (i == index) {
+					std::cout << "Item to remove skipped at index " << index << std::endl;
+				}
+				else {
+					//copy across values to the new arrays
+					K key = keyArray[i];
+					V val = valArray[i];
+
+					std::cout << "Copying " << val << " to " << key << std::endl;
+					tempKeyA[insert] = key;
+					tempValA[insert] = val;
+					insert++;
+				}
 			}
-			else {
-				//copy across values to the new arrays
-				K key = keyArray[i];
-				V val = valArray[i];
+			// decrement array size
+			capacity = newCapacity;
+			lnth--;
 
-				std::cout << "Copying " << val << " to " << key << std::endl;
-				tempKeyA[insert] = key;
-				tempValA[insert] = val;
-				insert++;
-			}
+			//destroy the old arrays.
+			delete[] keyArray;
+			delete[] valArray;
+
+			//assign new arrays as the old arrays
+			valArray = tempValA;
+			keyArray = tempKeyA;
+
+			std::cout << "Deletion didn't fail" << std::endl;
+			return capacity;
 		}
-		// decrement array size
-		capacity = newCapacity;
-
-		//destroy the old arrays.
-		delete[] keyArray;
-		delete[] valArray;
-
-		//assign new arrays as the old arrays
-		valArray = tempValA;
-		keyArray = tempKeyA;
-
-		std::cout << "Deletion didn't fail" << std::endl;
-		return capacity;
-	
 	};
 
 	/*
