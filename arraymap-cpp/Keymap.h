@@ -24,6 +24,10 @@ public:
 
 public:
 
+	/*
+	 *	Gets the present capacity of the array.
+	 *	return:	int				- the capacity of the array
+	 */
 	int getCapacity() {
 		return capacity;
 	};
@@ -157,15 +161,6 @@ public:
 	 */
 	bool checkKeyValue(K theKey) {
 		return true;
-	};
-
-	/*
-	 *	Method to shrink the size of both arrays by one
-	 * 	return: int				- new size of map
-	 */
-	int shrinkMap() {
-		capacity--;
-		return 0;
 	};
 	
 	/*
