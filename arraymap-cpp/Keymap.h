@@ -1,13 +1,14 @@
 #pragma once
 #include <stddef.h>
 #include <array>
+#include <iostream>
 
-/*
+/************************************************************************************
 	A class to map key:value pairs, built upon static C++ arrays.
-	types:	K			- The type of Key to be used
-			V			- The type of Value to be used
+	@types		K					- The type of Key to be used
+				V					- The type of Value to be used
 	Designed and implemented by Student 20107104674840, November 2019.
-*/
+*************************************************************************************/
 template <typename K, typename V>
 class Keymap
 {
@@ -29,19 +30,19 @@ private:
 
 public:
 
-	/*
-	 *	Gets the present capacity of the array.
-	 *	return:	int				- the capacity of the array
-	 */
+	/************************************************************************************
+	 Gets the present capacity of the array.
+		@return		int				- the capacity of the array
+	************************************************************************************/
 	int getCapacity() {
 		return capacity;
 	};
 
-	/*
-	 *	Method to insert a new key-value pair into the map
-	 *	param:	K, theKey		- the key to identify the value
-	 *			V, theValue		- the value to insert
-	 */
+	/************************************************************************************
+	 Inserts a new key-value pair into the map
+		 @param		K, theKey		- the key to identify the value
+	 				V, theValue		- the value to insert
+	************************************************************************************/
 	void insertPair(K key, V value) {
 		if (isKeyUnique(key)) {
 			if (lnth + 1 == capacity) {
@@ -58,10 +59,10 @@ public:
 		};
 	};
 
-	/*
-	 *	Method to remove a key-value pair based on the key
-	 *	param:	K, theKey		- the key to remove
-	 */
+	/************************************************************************************
+	Removes a key-value pair based on the key
+		@param		K, theKey		- the key to remove
+	************************************************************************************/
 	int removePair(K theKey) {
 	
 		int index = getIndex(theKey);
@@ -114,24 +115,22 @@ public:
 		}
 	};
 
-	/*
-	 *	Method to update a key-value pair based on the key
-	 *	param:	K, theKey		- the key to identify the value
-	 *			V, theValue		- the value to update
-	 *
-	 *	return: bool			- true if values updated
-	 */
+	/************************************************************************************
+	 Updates a key-value pair based on the key
+		@param		K, theKey		- the key to identify the value
+					V, theValue		- the value to update
+		@return		bool			- true if values updated
+	************************************************************************************/
 	bool updatePair(K theKey, V theValue) {
 		valArray[getIndex(theKey)] = theValue;
 		return true;
 	};
 
-	/*
-	 *	Method to ensure key does not exist in current key array
-	 *	param:	k, theKey		- the key to check
-	 *
-	 *	return: bool			- return true if theKey is unique and valid
-	 */
+	/************************************************************************************
+	 Ensure a key does not exist in current key array
+	 	@param		k, theKey		- the key to check
+	 	@return		bool			- return true if theKey is unique and valid
+	************************************************************************************/
 	bool isKeyUnique(K theKey) {
 		//Iterate through array length
 		for (int i = 0; i < capacity; i++) {
@@ -145,23 +144,22 @@ public:
 	};
 
 
-	/*
-	 *	Method to get the value stored in the map based on the Key
-	 *	param: K, key			- the key to identify the value
-	 *
-	 *	return: V				- the value to return, or null
-	 */
+	/************************************************************************************
+	 Gets the value stored in the map for a given Key
+		@param		K, key			- the key to identify the value
+		@return		V				- the value to return, or null
+	************************************************************************************/
 	V getValue(K key) {
 		if(getIndex(key)!=NULL)
 				return valArray[getIndex(key)];
 		return NULL;
 	};
 
-	/*
-	 * Method to get the index of a given key value
-	 * param:	K, key		- The key to find the index of.
-	 * return:	int			- The index of the key, or 0/NULL if not available.
-	 */
+	/************************************************************************************
+	 Gets the index of a given key
+		@param		K, key			- The key to find the index of.
+		@return		int				- The index of the key, or 0/NULL if not available.
+	************************************************************************************/
 	int getIndex(K key)
 	{
 		std::cout << "Seaching for " << key << std::endl;
@@ -180,10 +178,10 @@ public:
 		return NULL;
 	}
 
-	/*
-	 *	Method to enlarge the size of both arrays by one
-	 *	return: int				- new size of map
-	 */
+	/************************************************************************************
+	 Enlarge the size of both Key and Value arrays by one
+	 	@return		int				- new size of map
+	************************************************************************************/
 	int enlargeMap() {
 		std::cout << "Attempting to embiggen array" << std::endl;
 
