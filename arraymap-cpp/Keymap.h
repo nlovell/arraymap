@@ -28,6 +28,9 @@ private:
 	/* The array of Values to be used within the Map. */
 	V* valArray = new V[1];
 
+	const K NULLKEY;
+	const V NULLVAL;
+
 public:
 
 	/************************************************************************************
@@ -38,25 +41,52 @@ public:
 		return capacity;
 	};
 
+	int getLength() {
+		return lnth;
+	};
+
+	K setNulls(K nullKey, V nullVal) {
+		NULLKEY = nullKey;
+		NULLVAL = nullVal;
+	}
+
 	/************************************************************************************
 	 Inserts a new key-value pair into the map
 		 @param		K, theKey		- the key to identify the value
-	 				V, theValue		- the value to insert
+					V, theValue		- the value to insert
 	************************************************************************************/
 	void insertPair(K key, V value) {
 		if (isKeyUnique(key)) {
-			if (lnth + 1 == capacity) {
+			if (capacity == lnth + offset) {
 				enlargeMap();
-				std::cout << "EMBIGGEN" << std::endl;
 			}
 			try {
-				int insertLoc = capacity - 1;
+				int insertLoc = getEmptyPosition();
 				keyArray[insertLoc] = key;
 				valArray[insertLoc] = value;
 				lnth++;
 			}
-			catch (...) {}
+			catch (...) {
+				std::cout << "There's an error lol glhf" << std::endl;
+			}
 		};
+	};
+
+	/************************************************************************************
+	Asserts the first empty position in the array
+		 @return	int				- the first empty position, or 0
+	************************************************************************************/
+	int getEmptyPosition() {
+		//std::cout << "Looking for empty spaces." << std::endl;
+		for (int i = 1; i < capacity; i++) {
+			//std::cout << "Reading value of " << i << ": " << keyArray[i] << std::endl;
+			if (keyArray[i] == NULLKEY) {
+				std::cout << "Empty spaces found at index " << i << std::endl;
+				return i;
+			}
+		}
+		std::cout << "No empty space found.               :(" << std::endl;
+		return NULL;
 	};
 
 	/************************************************************************************
@@ -64,9 +94,14 @@ public:
 		@param		K, theKey		- the key to remove
 	************************************************************************************/
 	int removePair(K theKey) {
-	
+
 		int index = getIndex(theKey);
 
+		keyArray[index] = NULLKEY;
+		//valueArray[index] = NULL;
+
+		return index;
+		/*
 		//Index 0 is always empty, as it equates to NULL.
 		if (index > 0) {
 			int insert = 0;
@@ -98,7 +133,7 @@ public:
 					insert++;
 				}
 			}
-			// decrement array size
+			//decrement array size
 			capacity = newCapacity;
 			lnth--;
 
@@ -112,7 +147,7 @@ public:
 
 			std::cout << "Deletion didn't fail" << std::endl;
 			return capacity;
-		}
+		}*/
 	};
 
 	/************************************************************************************
@@ -122,24 +157,29 @@ public:
 		@return		bool			- true if values updated
 	************************************************************************************/
 	bool updatePair(K theKey, V theValue) {
-		valArray[getIndex(theKey)] = theValue;
-		return true;
+		int index = getIndex(theKey);
+		
+		if (index > 0) {
+			valArray[] = theValue;
+			return true;
+		}
+
+		return false;
 	};
 
 	/************************************************************************************
 	 Ensure a key does not exist in current key array
-	 	@param		k, theKey		- the key to check
-	 	@return		bool			- return true if theKey is unique and valid
+		@param		k, theKey		- the key to check
+		@return		bool			- return true if theKey is unique and valid
 	************************************************************************************/
 	bool isKeyUnique(K theKey) {
-		//Iterate through array length
+
 		for (int i = 0; i < capacity; i++) {
 			if (theKey == keyArray[i]) {
-				std::cout << "Key found in current key set. Skipping insert." << std::endl;
 				return false;
 			}
 		}
-		std::cout << "Key not found in current key set. Attempting insertion." << std::endl;
+
 		return true;
 	};
 
@@ -150,9 +190,9 @@ public:
 		@return		V				- the value to return, or null
 	************************************************************************************/
 	V getValue(K key) {
-		if(getIndex(key)!=NULL)
-				return valArray[getIndex(key)];
-		return NULL;
+		if (getIndex(key) != NULLKEY)
+			return valArray[getIndex(key)];
+		return NULLVAL;
 	};
 
 	/************************************************************************************
@@ -162,14 +202,10 @@ public:
 	************************************************************************************/
 	int getIndex(K key)
 	{
-		std::cout << "Seaching for " << key << std::endl;
-
 		//Iterates through the keyArray
-		for (int i = 0; i != capacity; i++) {
-			//std::cout << "index " << i << " : " << keyArray[i] << std::endl;
+		for (int i = offset; i != capacity; i++) {
 			//If it finds the key, return the associated value
 			if (keyArray[i] == key) {
-				std::cout << "Value found at index " << i << std::endl;
 				return i;
 			}
 		}
@@ -180,26 +216,35 @@ public:
 
 	/************************************************************************************
 	 Enlarge the size of both Key and Value arrays by one
-	 	@return		int				- new size of map
+		@return		int				- new size of map
 	************************************************************************************/
 	int enlargeMap() {
 		std::cout << "Attempting to embiggen array" << std::endl;
 
 		// increment array size
-		capacity++;						
+		capacity = capacity * 2;
 
-		//create larger arrays
-		K *tempKeyA = new K[capacity];
-		V *tempValA = new V[capacity];
-		for (int i = 0; i < capacity-1; i++) {
+		//larger arrays (temporary)
+		K* tempKeyA = new K[capacity];
+		V* tempValA = new V[capacity];
 
-			//copy across values to the new arrays
-			K key = keyArray[i];			
-			V val = valArray[i];
-
-			std::cout << "Copying " << val << " to " << key << std::endl;
-			tempKeyA[i] = key;
-			tempValA[i] = val;
+		//prefill array with NULL
+		std::fill_n(tempKeyA, capacity, NULLKEY);
+		std::fill_n(tempValA, capacity, NULLVAL);
+		
+		//For the known number of elements in the array...	(cont)
+		for (int j = offset; j <= lnth; j++) {
+			//...in the entire capacity of the array...		(cont)
+			for (int i = j; i < capacity; i++) {
+				//...with non-null keys...					(cont)
+				if (keyArray[i] != NULLKEY) {
+					//...copy them across, and mark the original key as NULL.
+					tempKeyA[j] = keyArray[i];
+					tempValA[j] = valArray[i];
+					keyArray[i] = NULLKEY;
+					i = capacity;
+				}
+			}
 		}
 
 		//destroy the old arrays.
@@ -210,8 +255,10 @@ public:
 		valArray = tempValA;
 		keyArray = tempKeyA;
 
+		delete[] tempKeyA;
+		delete[] tempValA;
+
 		std::cout << "Embiggening didn't fail" << std::endl;
 		return capacity;
 	};
 };
-
