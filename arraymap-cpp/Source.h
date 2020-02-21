@@ -10,11 +10,18 @@ void testIntCharKeymap() {
 	std::cout << "Null value: " << intCharKeymap->getValue(1) << std::endl;
 	std::cout << std::endl;
 
+	//Print the whole array
+	intCharKeymap->print();
+
 	//Insert 1 and find it
 	std::cout << "inserting 1:a" << std::endl;
 	intCharKeymap->insertPair(1, 'a');
 	std::cout << "Get val1: " << intCharKeymap->getValue(1) << std::endl;
 	std::cout << std::endl;
+
+	//Print the whole array
+	intCharKeymap->print();
+
 
 	//Attempt to insert 1 again, and find it
 	std::cout << "inserting 1:z" << std::endl;
@@ -22,12 +29,18 @@ void testIntCharKeymap() {
 	std::cout << "Get val1: " << intCharKeymap->getValue(1) << std::endl;
 	std::cout << std::endl;
 
+	//Print the whole array
+	intCharKeymap->print();
+
 	//Insert 2, and find both 1 and 2
 	std::cout << "inserting 2:b" << std::endl;
 	intCharKeymap->insertPair(2, 'b');
 	std::cout << intCharKeymap->getValue(1) << std::endl;
 	std::cout << intCharKeymap->getValue(2) << std::endl;
 	std::cout << std::endl;
+
+	//Print the whole array
+	intCharKeymap->print();
 
 	//Insert 3, and find 1, 2, and 3
 	std::cout << "inserting 3:c" << std::endl;
@@ -37,6 +50,9 @@ void testIntCharKeymap() {
 	std::cout << intCharKeymap->getValue(3) << std::endl;
 	std::cout << std::endl;
 
+	//Print the whole array
+	intCharKeymap->print();
+
 	//Update 1 to 123
 	std::cout << "updating 1:a to 1:A" << std::endl;
 	intCharKeymap->updatePair(1, 'A');
@@ -44,6 +60,9 @@ void testIntCharKeymap() {
 	std::cout << intCharKeymap->getValue(2) << std::endl;
 	std::cout << intCharKeymap->getValue(3) << std::endl;
 	std::cout << std::endl;
+
+	//Print the whole array
+	intCharKeymap->print();
 
 	//Remove 1
 	std::cout << "Removing 1:A" << std::endl;
@@ -54,6 +73,10 @@ void testIntCharKeymap() {
 	std::cout << "  Value 2: " << intCharKeymap->getValue(2) << std::endl;
 	std::cout << "  Value 3: " << intCharKeymap->getValue(3) << std::endl;
 	std::cout << std::endl;
+
+	//Print the whole array
+	intCharKeymap->print();
+
 };
 
 int main() {

@@ -28,6 +28,7 @@ private:
 	/* The array of Values to be used within the Map. */
 	V* valArray = new V[1];
 
+
 public:
 
 	/************************************************************************************
@@ -51,8 +52,8 @@ public:
 			}
 			try {
 				int insertLoc = capacity - 1;
-				keyArray[insertLoc] = key;
-				valArray[insertLoc] = value;
+				keyArray[insertLoc] = * new K(key);
+				valArray[insertLoc] = * new V(value);
 				lnth++;
 			}
 			catch (...) {}
@@ -149,10 +150,13 @@ public:
 		@param		K, key			- the key to identify the value
 		@return		V				- the value to return, or null
 	************************************************************************************/
-	V getValue(K key) {
-		if(getIndex(key)!=NULL)
-				return valArray[getIndex(key)];
-		return NULL;
+	V * getValue(K key) {
+		if (getIndex(key) != NULL) {
+			V* vt = &valArray[getIndex(key)];
+
+			return vt;
+		}
+		return nullptr;
 	};
 
 	/************************************************************************************
@@ -175,7 +179,7 @@ public:
 		}
 		//If key not found in the array, return null
 		std::cout << "Value not found. Maybe it was deleted by mistake?" << std::endl;
-		return NULL;
+		return -1;
 	}
 
 	/************************************************************************************
@@ -213,5 +217,24 @@ public:
 		std::cout << "Embiggening didn't fail" << std::endl;
 		return capacity;
 	};
-};
 
+
+	/************************************************************************************
+	Prints the contents of the array to the console.
+	************************************************************************************/
+	void print() {
+		std::cout << "Printing contents of the map as [key:value] pairs. " << std::endl;
+
+		for (int i = 0; i != capacity; i++) {
+			V *val1 = getValue(keyArray[i]);
+			if (val1 == nullptr) {
+				std::cout << "Nullptr returned at index " << i << std::endl;
+			}
+			else {
+				V val2 = *val1;
+				std::cout << keyArray[i] << " : " << val2 << std::endl;
+
+			}
+		}
+	}
+};
