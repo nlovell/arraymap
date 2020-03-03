@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 #include <stddef.h>
 #include <array>
 #include <iostream>
@@ -19,13 +19,10 @@ private:
 	/* The length of the array. */
 	int lnth = 0;
 
-	/* The permanent offset for writing to the array. */
-	const int offset = 1;
-
-	/* The array of Keys to be used within the Map. */
+	/* The array of pointers to Keys to be used within the Map. */
 	K* keyArray = new K[1];
 
-	/* The array of Values to be used within the Map. */
+	/* The array of pointers to Values to be used within the Map. */
 	V* valArray = new V[1];
 
 
@@ -36,11 +33,19 @@ public:
 		@return		int				- the capacity of the array
 	************************************************************************************/
 	int getCapacity() {
-		return capacity;
+		return capacity-1;
 	};
 
 	/************************************************************************************
-	 Inserts a new key-value pair into the map
+	 Gets the number of items stored in the map.
+		@return		int				- the capacity of the array
+	************************************************************************************/
+	int getLength() {
+		return lnth;
+	};
+
+	/************************************************************************************
+	 Inserts a new key-value pair into the map, if the key provided is unique
 		 @param		K, theKey		- the key to identify the value
 	 				V, theValue		- the value to insert
 	************************************************************************************/
@@ -48,16 +53,28 @@ public:
 		if (isKeyUnique(key)) {
 			if (lnth + 1 == capacity) {
 				enlargeMap();
-				std::cout << "EMBIGGEN" << std::endl;
+				//std::cout << "EMBIGGEN" << std::endl;
 			}
 			try {
-				int insertLoc = capacity - 1;
-				keyArray[insertLoc] = * new K(key);
-				valArray[insertLoc] = * new V(value);
 				lnth++;
+				keyArray[lnth] = * new K(key);
+				valArray[lnth] = * new V(value);
 			}
 			catch (...) {}
 		};
+	};
+
+	/************************************************************************************
+	 Inserts a new key-value pair into the map if unique, or updates an existing value
+		 @param		K, theKey		- the key to identify the value
+	 				V, theValue		- the value to insert
+	************************************************************************************/
+	void insertOrUpdate(K key, V value) {
+		if (isKeyUnique(key)) {
+			insertPair(key, value);
+		} else {
+			updatePair(key, value);
+		}
 	};
 
 	/************************************************************************************
@@ -71,7 +88,10 @@ public:
 		//Index 0 is always empty, as it equates to NULL.
 		if (index > 0) {
 			int insert = 0;
-			int newCapacity = capacity - 1;
+			int newCapacity = capacity;
+			if(capacity < lnth / 2){
+				 newCapacity = capacity / 2;
+			}
 
 			std::cout << "Attempting to remove item from array" << std::endl;
 
@@ -81,28 +101,26 @@ public:
 
 			//Iterate through old array length
 			for (int i = 0; i < capacity; i++) {
-				std::cout << insert << " <- insert index" << std::endl;
-				std::cout << i << " <- fetch index" << std::endl;
+				//std::cout << insert << " <- insert index" << std::endl;
+				//std::cout << i << " <- fetch index" << std::endl;
 
 				//Skip copying the item to remove
 				if (i == index) {
-					std::cout << "Item to remove skipped at index " << index << std::endl;
+					lnth--;
+					//std::cout << "Item to remove skipped at index " << index << std::endl;
 				}
 				else {
 					//copy across values to the new arrays
 					K key = keyArray[i];
 					V val = valArray[i];
 
-					std::cout << "Copying " << val << " to " << key << std::endl;
+					//std::cout << "Copying " << val << " to " << key << std::endl;
 					tempKeyA[insert] = key;
 					tempValA[insert] = val;
 					insert++;
 				}
 			}
-			// decrement array size
-			capacity = newCapacity;
-			lnth--;
-
+	
 			//destroy the old arrays.
 			delete[] keyArray;
 			delete[] valArray;
@@ -111,9 +129,12 @@ public:
 			valArray = tempValA;
 			keyArray = tempKeyA;
 
-			std::cout << "Deletion didn't fail" << std::endl;
+			//std::cout << "Deletion didn't fail" << std::endl;
 			return capacity;
 		}
+
+		//If all else fails, return null
+		return 0;
 	};
 
 	/************************************************************************************
@@ -140,10 +161,9 @@ public:
 				return false;
 			}
 		}
-		std::cout << "Key not found in current key set. Attempting insertion." << std::endl;
+		//std::cout << "Key not found in current key set. Attempting insertion." << std::endl;
 		return true;
 	};
-
 
 	/************************************************************************************
 	 Gets the value stored in the map for a given Key
@@ -151,9 +171,11 @@ public:
 		@return		V				- the value to return, or null
 	************************************************************************************/
 	V * getValue(K key) {
-		if (getIndex(key) != NULL) {
-			V* vt = &valArray[getIndex(key)];
+		
+		return  &valArray[getIndex(key)];
 
+		if (getIndex(key) != 0) {
+			V* vt = &valArray[getIndex(key)];
 			return vt;
 		}
 		return nullptr;
@@ -166,19 +188,19 @@ public:
 	************************************************************************************/
 	int getIndex(K key)
 	{
-		std::cout << "Seaching for " << key << std::endl;
+		//std::cout << "Seaching for " << key << std::endl;
 
 		//Iterates through the keyArray
 		for (int i = 0; i != capacity; i++) {
 			//std::cout << "index " << i << " : " << keyArray[i] << std::endl;
 			//If it finds the key, return the associated value
 			if (keyArray[i] == key) {
-				std::cout << "Value found at index " << i << std::endl;
+				//std::cout << "Value found at index " << i << std::endl;
 				return i;
 			}
 		}
 		//If key not found in the array, return null
-		std::cout << "Value not found. Maybe it was deleted by mistake?" << std::endl;
+		//std::cout << "Value not found. Maybe it was deleted by mistake?" << std::endl;
 		return -1;
 	}
 
@@ -187,24 +209,30 @@ public:
 	 	@return		int				- new size of map
 	************************************************************************************/
 	int enlargeMap() {
-		std::cout << "Attempting to embiggen array" << std::endl;
+		//std::cout << "Attempting to embiggen array" << std::endl;
 
-		// increment array size
-		capacity++;						
+		std::cout << "Old array size: " << capacity-1 << ".";
+
+		// incremented
+		int inc = capacity + capacity;
+
 
 		//create larger arrays
-		K *tempKeyA = new K[capacity];
-		V *tempValA = new V[capacity];
-		for (int i = 0; i < capacity-1; i++) {
-
+		K *tempKeyA = new K[inc];
+		V *tempValA = new V[inc];
+		for (int i = 0; i < inc-1; i++) {
 			//copy across values to the new arrays
 			K key = keyArray[i];			
 			V val = valArray[i];
 
-			std::cout << "Copying " << val << " to " << key << std::endl;
+			//std::cout << "Copying " << val << " to " << key << std::endl;
 			tempKeyA[i] = key;
 			tempValA[i] = val;
 		}
+		
+		// increment array size
+		capacity = inc;						
+
 
 		//destroy the old arrays.
 		delete[] keyArray;
@@ -214,7 +242,8 @@ public:
 		valArray = tempValA;
 		keyArray = tempKeyA;
 
-		std::cout << "Embiggening didn't fail" << std::endl;
+		std::cout << " New array size: " << capacity-1 << std::endl;
+		//std::cout << "Embiggening didn't fail" << std::endl;
 		return capacity;
 	};
 
@@ -225,15 +254,14 @@ public:
 	void print() {
 		std::cout << "Printing contents of the map as [key:value] pairs. " << std::endl;
 
-		for (int i = 0; i != capacity; i++) {
-			V *val1 = getValue(keyArray[i]);
-			if (val1 == nullptr) {
-				std::cout << "Nullptr returned at index " << i << std::endl;
+		for (int i = 1; i <= lnth; i++) {
+			V *ref = getValue(keyArray[i]);
+			if (ref != nullptr) {
+				V deref = *ref;
+				std::cout << keyArray[i] << " : " << deref << std::endl;
 			}
 			else {
-				V val2 = *val1;
-				std::cout << keyArray[i] << " : " << val2 << std::endl;
-
+				//std::cout << "NULL" << " : " << "NULL" << std::endl;
 			}
 		}
 	}
