@@ -8,14 +8,18 @@
 	Designed and implemented by Student 20107104674840, November 2019.
 *************************************************************************************/
 
-void testTitle(std::string test) {
-	std::cout << std::endl << "==============================" <<
-	std::endl << std::endl << "TEST: " << test << std::endl;
+void testTitle(std::string test)
+{
+	std::cout << std::endl
+			  << "==============================" << std::endl
+			  << std::endl
+			  << "TEST: " << test << std::endl;
 }
 
-void testIntCharKeymap() {
+void testIntCharKeymap()
+{
 	std::cout << "Testing features with Int:Char keymap!" << std::endl;
-	Keymap<int, char> * intCharKeymap = new Keymap<int, char>;
+	Keymap<int, char> *intCharKeymap = new Keymap<int, char>;
 
 	//------------------------------------
 
@@ -53,7 +57,6 @@ void testIntCharKeymap() {
 	intCharKeymap->print();
 
 	//------------------------------------
-
 
 	//Insert 2, and find both 1 and 2
 	testTitle("Insert B against 2, then find both 1 and 2");
@@ -119,14 +122,14 @@ void testIntCharKeymap() {
 	//Print the whole array
 	intCharKeymap->print();
 
-	for(int i = 0; i <= 126; i++){
+	for (int i = 0; i <= 126; i++)
+	{
 		intCharKeymap->insertOrUpdate(i, char(i));
-		std::cout << * intCharKeymap->getValue(i) << std::endl;
 	}
 
 	//Print the whole array
 	intCharKeymap->print();
-	
+
 	//------------------------------------
 
 	//Remove everything
@@ -135,8 +138,9 @@ void testIntCharKeymap() {
 	//intCharKeymap->removePair(3);
 	//Print the whole array
 	int contents = intCharKeymap->getLength();
-	
-	for(int i = 0; i <= 120; i++){
+
+	for (int i = 0; i <= 120; i++)
+	{
 		intCharKeymap->removePair(i);
 	}
 
@@ -144,22 +148,62 @@ void testIntCharKeymap() {
 
 	//Print the whole array
 	intCharKeymap->print();
-	
+
 	//------------------------------------
 };
 
-void testStringStringKeymap(){
-std::cout << "Testing features with String:String keymap!" << std::endl;
-	Keymap<std::string, std::string> * km = new Keymap<std::string, std::string>;
+void testStringStringKeymap()
+{
+	std::cout << "Testing features with String:String keymap!" << std::endl;
+	Keymap<int, std::string> *km = new Keymap<int, std::string>;
 
-	testTitle(" Insert value \"Yes\" against \"No\", and find it.");
-	km->insertPair("Yes", "No");
-	km->insertPair("Maybe", "Idk");
-	//km->insertPair("Can", "you");
-	//km->insertPair("Repeat", "the");
-	//km->insertPair("Question","..?");
-	//km->insertPair("YOU'RE NOT THE BOSS OF ME NOW", "YOU'RE NOT THE BOSS OF ME NOW");
-	std::cout << "Get Yes: " << *km->getValue("Yes") << std::endl;
+	//------------------------------------
+
+	//Print the first value of an empty array
+	testTitle("Print the first value of an empty array");
+	std::string var = *km->getValue(1);
+	std::cout << "Null value: " << var << std::endl;
 	std::cout << std::endl;
+
+	//Print the whole array
 	km->print();
+
+	//------------------------------------
+
+	//Insert 1 and find it
+	testTitle(" Insert value A against 1, and find it.");
+	std::cout << "inserting 1:a" << std::endl;
+	km->insertPair(1, "aaaaa");
+	std::cout << "Get val1: " << *km->getValue(1) << std::endl;
+	std::cout << std::endl;
+
+	//Print the whole array
+	km->print();
+
+	//------------------------------------
+
+	//Attempt to insert 1 again, and find it
+	testTitle("Attempt to insert against Key 1 again, and find it");
+	std::cout << "inserting 1:z" << std::endl;
+	km->insertPair(1, "zip");
+	std::cout << "Get val1: " << *km->getValue(1) << std::endl;
+	std::cout << std::endl;
+
+	//Print the whole array
+	km->print();
+
+	//------------------------------------
+
+	//Insert 2, and find both 1 and 2
+	testTitle("Insert B against 2, then find both 1 and 2");
+	std::cout << "inserting 2:b" << std::endl;
+	km->insertPair(2, "beep");
+	std::cout << *km->getValue(1) << std::endl;
+	std::cout << *km->getValue(2) << std::endl;
+	std::cout << std::endl;
+
+	//Print the whole array
+	km->print();
+
+	//------------------------------------
 };

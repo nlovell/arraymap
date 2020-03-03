@@ -6,7 +6,7 @@
 
 
 int main() {
-	testIntCharKeymap();
+	//testIntCharKeymap();
 	testStringStringKeymap();
 	return 0;
 };

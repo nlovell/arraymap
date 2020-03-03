@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <array>
 #include <iostream>
+#include <string>
 
 /************************************************************************************
 	A class to map key:value pairs, built upon static C++ arrays.
@@ -93,7 +94,7 @@ public:
 				 newCapacity = capacity / 2;
 			}
 
-			std::cout << "Attempting to remove item from array" << std::endl;
+			//std::cout << "Attempting to remove item from array" << std::endl;
 
 			//create smaller arrays
 			K* tempKeyA = new K[newCapacity];
@@ -157,7 +158,7 @@ public:
 		//Iterate through array length
 		for (int i = 0; i < capacity; i++) {
 			if (theKey == keyArray[i]) {
-				std::cout << "Key found in current key set. Skipping insert." << std::endl;
+				//std::cout << "Key found in current key set. Skipping insert." << std::endl;
 				return false;
 			}
 		}
@@ -253,16 +254,21 @@ public:
 	************************************************************************************/
 	void print() {
 		std::cout << "Printing contents of the map as [key:value] pairs. " << std::endl;
-
+		if(lnth > 0){
 		for (int i = 1; i <= lnth; i++) {
 			V *ref = getValue(keyArray[i]);
 			if (ref != nullptr) {
-				V deref = *ref;
-				std::cout << keyArray[i] << " : " << deref << std::endl;
+				V derefVal = *ref;
+				std::cout << "[" << keyArray[i] << ":" << derefVal << "], ";
 			}
 			else {
 				//std::cout << "NULL" << " : " << "NULL" << std::endl;
 			}
 		}
+				std::cout << "\b\b " << std::endl;
+
+	} else {
+		std::cout << "The keymap is empty, and as such no printable values are stored." << std::endl;
 	}
+	};
 };
