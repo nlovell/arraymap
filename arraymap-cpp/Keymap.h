@@ -120,13 +120,15 @@ public:
 	Removes a key-value pair based on the key
 		@param		K, theKey		- the key to remove
 	************************************************************************************/
-	int removePair(K theKey)
+	bool removePair(K theKey)
 	{
-
 		int newCapacity = capacity;
-		if (capacity < lnth / 2)
-		{
-			newCapacity = 1 + capacity / 2;
+		if (lnth < capacity / 2)
+		{	
+			newCapacity = (capacity / 2);
+			if(newCapacity < 1){
+				newCapacity = 1;
+			}
 		}
 
 		//create smaller arrays
@@ -155,10 +157,10 @@ public:
 			valArray = tempValA;
 			capacity = newCapacity;
 
-			return newCapacity;
+			return true;
 		}
 
-		return -1;
+		return false;
 	}
 
 	/************************************************************************************
@@ -358,7 +360,5 @@ public:
 	{
 		delete[] keyArray;
 		delete[] valArray;
-		delete capacity;
-		delete lnth;
 	};
 };
