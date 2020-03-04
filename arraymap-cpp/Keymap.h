@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 #include <stddef.h>
 #include <array>
 #include <iostream>
@@ -27,7 +27,6 @@ private:
 	V *valArray = new V[capacity];
 
 public:
-
 	/************************************************************************************
 	Removes all values and resets the map to it's default state non-destructively.
 		All data pointed to within the map is *not* removed.
@@ -42,10 +41,18 @@ public:
 		valArray = new V[capacity];
 	};
 
-	bool isEmpty(){
-		if(lnth<=0){
+	/************************************************************************************
+	Returns true if the length of the array is zero (or less).
+		@return		bool			- true if length <=0
+	************************************************************************************/
+	bool isEmpty()
+	{
+		if (lnth <= 0)
+		{
 			return true;
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	};
@@ -79,7 +86,9 @@ public:
 		if (keyExists(key))
 		{
 			return false;
-		} else {
+		}
+		else
+		{
 			if (lnth + 1 == capacity)
 			{
 				enlargeMap();
@@ -88,6 +97,7 @@ public:
 			lnth++;
 			keyArray[lnth] = *new K(key);
 			valArray[lnth] = *new V(value);
+			return true;
 		};
 	};
 
@@ -96,12 +106,14 @@ public:
 		 @param		K, theKey		- the key to identify the value
 	 				V, theValue		- the value to insert
 	************************************************************************************/
-	void insertOrUpdate(K key, V value)
+	bool insertOrUpdate(K key, V value)
 	{
 		if (!insert(key, value))
 		{
 			updatePair(key, value);
+			return false;
 		}
+		return true;
 	};
 
 	/************************************************************************************
@@ -111,60 +123,43 @@ public:
 	int removePair(K theKey)
 	{
 
-		int index = getIndex(theKey);
-
-		int insert = 0;
 		int newCapacity = capacity;
 		if (capacity < lnth / 2)
 		{
-			newCapacity = capacity / 2;
+			newCapacity = 1 + capacity / 2;
 		}
-
-		//std::cout << "Attempting to remove item from array" << std::endl;
 
 		//create smaller arrays
 		K *tempKeyA = new K[newCapacity];
 		V *tempValA = new V[newCapacity];
 
-		//Iterate through old array length
-		for (int i = 0; i < capacity; i++)
+		if (keyExists(theKey))
 		{
-			//std::cout << insert << " <- insert index" << std::endl;
-			//std::cout << i << " <- fetch index" << std::endl;
-
-			//Skip copying the item to remove
-			if (i == index)
+			lnth--;
+			int j = 0;
+			for (int i = 0; i < capacity; i++)
 			{
-				lnth--;
-				//std::cout << "Item to remove skipped at index " << index << std::endl;
-			}
-			else
-			{
-				//copy across values to the new arrays
-				K key = keyArray[i];
-				V val = valArray[i];
-
-				//std::cout << "Copying " << val << " to " << key << std::endl;
-				tempKeyA[insert] = key;
-				tempValA[insert] = val;
-				insert++;
+				if (keyArray[i] != theKey)
+				{
+					tempKeyA[j] = keyArray[i];
+					tempValA[j] = valArray[i];
+					j++;
+				}
 			}
 
 			//destroy the old arrays.
 			delete[] keyArray;
 			delete[] valArray;
 
-			//assign new arrays as the old arrays
-			valArray = tempValA;
 			keyArray = tempKeyA;
+			valArray = tempValA;
+			capacity = newCapacity;
 
-			//std::cout << "Deletion didn't fail" << std::endl;
-			return capacity;
+			return newCapacity;
 		}
 
-		//If all else fails, return -1
 		return -1;
-	};
+	}
 
 	/************************************************************************************
 	 Updates a key-value pair based on the key
@@ -224,7 +219,7 @@ public:
 	{
 		return &valArray[getIndex(key)];
 
-		if (getIndex(key) != 0)
+		if (getIndex(key) != -1)
 		{
 			V *vt = &valArray[getIndex(key)];
 			return vt;
@@ -240,23 +235,28 @@ public:
 	V getValue(K key)
 	{
 		return *getValuePointer(key);
-	}
+	};
+
+	V getValue(K *keyPointer)
+	{
+		return *keyPointer;
+	};
 
 	/************************************************************************************
 	 Gets the value stored in the map for a given Key
 		@param		K, key			- the key to identify the value
 		@return		V				- the value to return, or null
 	************************************************************************************/
-	V getValueOrDefault(K key, V default)
+	V getValueOrDefault(K key, V dflt)
 	{
 		V *valP = getValuePointer(key);
 		if (valP == nullptr)
 		{
-			return default;
+			return dflt;
 		}
 		else
 		{
-			return *getValuePointer(key);
+			return getValue(valP);
 		}
 	};
 
@@ -267,21 +267,15 @@ public:
 	************************************************************************************/
 	int getIndex(K key)
 	{
-		//std::cout << "Seaching for " << key << std::endl;
-
 		//Iterates through the keyArray
-		for (int i = 0; i != capacity; i++)
+		for (int i = 0; i <= capacity; i++)
 		{
-			//std::cout << "index " << i << " : " << keyArray[i] << std::endl;
 			//If it finds the key, return the associated value
 			if (keyArray[i] == key)
 			{
-				//std::cout << "Value found at index " << i << std::endl;
 				return i;
 			}
 		}
-		//If key not found in the array, return null
-		//std::cout << "Value not found. Maybe it was deleted by mistake?" << std::endl;
 		return -1;
 	};
 
@@ -292,8 +286,7 @@ public:
 	int enlargeMap()
 	{
 		//std::cout << "Attempting to embiggen array" << std::endl;
-
-		std::cout << "Old array size: " << capacity - 1 << "." << std::endl;
+		//std::cout << "Old array size: " << capacity - 1 << "." << std::endl;
 
 		// incremented
 		int inc = capacity + capacity;
@@ -301,14 +294,14 @@ public:
 		//create larger arrays
 		K *tempKeyA = new K[inc];
 		V *tempValA = new V[inc];
-		for (int i = capacity - lnth; i < lnth; i++)
+		for (int i = capacity - lnth; i <= lnth; i++)
 		{
 			//copy across values to the new arrays
 			//K key = keyArray[i];
 			//V val = valArray[i];
 			if (getValuePointer(keyArray[i]))
 			{
-				std::cout << "Copying " << valArray[i] << " to index " << i << " (" << keyArray[i] << ")" << std::endl;
+				//std::cout << "Copying " << valArray[i] << " to index " << i << " (" << keyArray[i] << ")" << std::endl;
 				tempKeyA[i] = keyArray[i];
 				tempValA[i] = valArray[i];
 			}
@@ -325,7 +318,7 @@ public:
 		valArray = tempValA;
 		keyArray = tempKeyA;
 
-		std::cout << " New array size: " << capacity - 1 << std::endl;
+		//std::cout << " New array size: " << capacity - 1 << std::endl;
 		//std::cout << "Embiggening didn't fail" << std::endl;
 		return capacity;
 	};
@@ -335,7 +328,7 @@ public:
 	************************************************************************************/
 	void print()
 	{
-		std::cout << "Printing contents of the map as [key:value] pairs. " << std::endl;
+		//std::cout << "Printing contents of the map as [key:value] pairs. " << std::endl;
 		if (lnth > 0)
 		{
 			for (int i = 1; i <= lnth; i++)
@@ -348,7 +341,9 @@ public:
 				}
 				else
 				{
-					//std::cout << "NULL" << " : " << "NULL" << std::endl;
+					std::cout << "NULL"
+							  << " : "
+							  << "NULL" << std::endl;
 				}
 			}
 			std::cout << "\b\b " << std::endl;
@@ -357,5 +352,13 @@ public:
 		{
 			std::cout << "The keymap is empty, and as such no printable values are stored." << std::endl;
 		}
+	};
+
+	~Keymap()
+	{
+		delete[] keyArray;
+		delete[] valArray;
+		delete capacity;
+		delete lnth;
 	};
 };
