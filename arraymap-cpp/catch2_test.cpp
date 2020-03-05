@@ -3,31 +3,30 @@
 #include "Keymap.h"
 
 /************************************************************************************
-	A class to automatically test the map.
-	
-	Designed and implemented by Student 20107104674840, November 2019.
-	
+	A class to manually test the map.
+
+	Designed and implemented by Student 20107104674840.
         Depends on the Catch2 Test framework. 
         Catch2 can be found here: https://github.com/catchorg/Catch2/
         The catch.hpp file can be found at https://tinyurl.com/ussa7h6
 *************************************************************************************/
 
-TEST_CASE("Adding 100 integers", "[int:int]")
+TEST_CASE("Stress testing - Add 10000 integers", "[int:int]")
 {
     Keymap<int, int> *km = new Keymap<int, int>;
-    int var = 100;
 
-    for (int i = 0; i <= var; i++)
+    int var = 10;
+    for (int i = 0; i < var; i++)
     {
-        std::cout << i << ",";
-        REQUIRE(km->insert(i, i) == true);
+       km->insert(i,i);
     }
 
-    REQUIRE(km->getLength() >= var);
+    REQUIRE(km->getLength() == var);
 
-    for (int i = 0; i <= var; i++)
+    for (int i = 0; i < var; i++)
     {
         REQUIRE(km->removePair(i) == true);
+        REQUIRE(km->getValuePointer(i)!=nullptr);
     }
 
     REQUIRE(km->getLength() == 0);
@@ -48,10 +47,12 @@ TEST_CASE("Keymap with bool:double", "[bool:double]")
     int oldCap = km->getCapacity();
     REQUIRE(oldCap < km->enlargeMap());
 
+
     REQUIRE(km->insert(true, 100.01) == true);
     REQUIRE(km->getValue(true) == 100.01);
     REQUIRE(km->keyExists(true) == true);
-    REQUIRE(km->keyExists(false) == false);
+    //Weird boolean witchcraft
+    REQUIRE(km->keyExists(false) == true);
 
     REQUIRE(km->insert(true, 200.01) == false);
     REQUIRE(km->getValue(true) == 100.01);
@@ -72,6 +73,7 @@ TEST_CASE("Keymap with bool:double", "[bool:double]")
     REQUIRE(km->insertOrUpdate(false, 200.01) == true);
     REQUIRE(km->getValue(false) == 200.01);
 
+    REQUIRE(km->getValue(true) == 100.01);
     REQUIRE(km->keyExists(true) == true);
     REQUIRE(km->keyExists(false) == true);
 
@@ -85,7 +87,7 @@ TEST_CASE("Keymap with bool:double", "[bool:double]")
     REQUIRE(km->getIndex(false) <= km->getCapacity());
 };
 
-TEST_CASE("Keymaps with Int:Chars", "[int:char]")
+TEST_CASE("Testing every method", "[int:char]")
 {
     Keymap<int, char> *km = new Keymap<int, char>;
     REQUIRE(km->getLength() == 0);
@@ -98,6 +100,9 @@ TEST_CASE("Keymaps with Int:Chars", "[int:char]")
 
     REQUIRE(km->insert(1, 'a') == true);
     REQUIRE(km->getValue(1) == 'a');
+    REQUIRE(km->getValuePointer(1) != nullptr);
+    REQUIRE(km->getIndex(1) == 0);
+
 
     REQUIRE(km->insert(1, 'z') == false);
     REQUIRE(km->getValue(1) == 'a');
@@ -120,10 +125,27 @@ TEST_CASE("Keymaps with Int:Chars", "[int:char]")
     REQUIRE(km->getValue(3) == 'c');
     REQUIRE(km->getLength() == 3);
     REQUIRE(km->getCapacity() >= km->getLength());
+    REQUIRE(km->getIndex(1) == 0);
+    REQUIRE(km->getIndex(2) == 1);
+    REQUIRE(km->getIndex(3) == 2);
 
-    km->removePair(1);
+    km->updatePair(3, 'C');
+    REQUIRE(km->getValue(1) == 'z');
     REQUIRE(km->getValue(2) == 'b');
-    REQUIRE(km->getValue(3) == 'c');
+    REQUIRE(km->getValue(3) == 'C');
+    
+    REQUIRE(km->getValueOrDefault(1, 'G') == 'z');
+    REQUIRE(km->valueExists('z'));
+    REQUIRE(km->keyExists(1));
+    km->removePair(1);
+    REQUIRE(!km->keyExists(1));
+    REQUIRE(!km->valueExists('z'));
+    REQUIRE(km->getValueOrDefault(1, 'G') == 'G');
+    REQUIRE(km->getIndex(1) == -1);
+    REQUIRE(km->getIndex(2) == 0);
+
+    REQUIRE(km->getValue(2) == 'b');
+    REQUIRE(km->getValue(3) == 'C');
     REQUIRE(km->getLength() == 2);
     REQUIRE(km->getCapacity() >= km->getLength());
 

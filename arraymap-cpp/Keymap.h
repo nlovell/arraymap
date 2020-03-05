@@ -10,10 +10,19 @@
 				V					- The type of Value to be used
 	Designed and implemented by Student 20107104674840, November 2019.
 *************************************************************************************/
+
+//The iterator needs to be forward-declared.
+template <typename K, typename V>
+class MapIter;
+
+//A happy little Keymap template
 template <typename K, typename V>
 class Keymap
 {
 private:
+    //Every template needs a
+	friend class MapIter<K, V>;
+
 	/* The capacity of the array. */
 	int capacity = 1;
 
@@ -33,8 +42,14 @@ public:
 	************************************************************************************/
 	void reset()
 	{
+		for (int i = 0; i < lnth; i++)
+		{
+			removePair(keyArray[lnth]);
+		}
+
 		capacity = 1;
 		lnth = 0;
+
 		delete[] keyArray;
 		delete[] valArray;
 		keyArray = new K[capacity];
@@ -89,14 +104,15 @@ public:
 		}
 		else
 		{
-			if (lnth + 1 == capacity)
+			if (lnth == capacity)
 			{
 				enlargeMap();
 			}
 
-			lnth++;
 			keyArray[lnth] = *new K(key);
 			valArray[lnth] = *new V(value);
+			lnth++;
+			//std::cout<< "Length: " << lnth << " | Val: " << value << std::endl;
 			return true;
 		};
 	};
@@ -105,28 +121,33 @@ public:
 	 Inserts a new key-value pair into the map if unique, or updates an existing value
 		 @param		K, theKey		- the key to identify the value
 	 				V, theValue		- the value to insert
+		 @return	Returns True if inserted, False if updated.
 	************************************************************************************/
 	bool insertOrUpdate(K key, V value)
 	{
-		if (!insert(key, value))
+
+		bool test = insert(key, value);
+		if (!test)
 		{
 			updatePair(key, value);
-			return false;
+			test = false;
 		}
-		return true;
+		return test;
 	};
 
 	/************************************************************************************
 	Removes a key-value pair based on the key
 		@param		K, theKey		- the key to remove
 	************************************************************************************/
+
 	bool removePair(K theKey)
 	{
 		int newCapacity = capacity;
 		if (lnth < capacity / 2)
-		{	
+		{
 			newCapacity = (capacity / 2);
-			if(newCapacity < 1){
+			if (newCapacity < 1)
+			{
 				newCapacity = 1;
 			}
 		}
@@ -202,14 +223,15 @@ public:
 	************************************************************************************/
 	bool valueExists(V value)
 	{
-		if (getValuePointer == nullptr)
+		for (int i = 0; i < lnth; i++)
 		{
-			return false;
+			if (valArray[i] == value)
+			{
+				return true;
+			}
 		}
-		else
-		{
-			return true;
-		}
+
+		return false;
 	};
 
 	/************************************************************************************
@@ -229,6 +251,11 @@ public:
 		return nullptr;
 	};
 
+	V *getValuePointerAtIndex(int index){
+		
+		return &valArray[index];
+	}
+
 	/************************************************************************************
 	 Gets the value stored in the map for a given Key
 		@param		K, key			- the key to identify the value
@@ -238,6 +265,11 @@ public:
 	{
 		return *getValuePointer(key);
 	};
+
+	V getValueAtIndex(int index)
+	{
+		return valArray[index];
+	}
 
 	V getValue(K *keyPointer)
 	{
@@ -251,14 +283,14 @@ public:
 	************************************************************************************/
 	V getValueOrDefault(K key, V dflt)
 	{
-		V *valP = getValuePointer(key);
-		if (valP == nullptr)
+		if (keyExists(key)
+)
 		{
-			return dflt;
+			return getValue(key);
 		}
 		else
 		{
-			return getValue(valP);
+			return dflt;
 		}
 	};
 
@@ -281,6 +313,10 @@ public:
 		return -1;
 	};
 
+	K getKeyAtIndex(int index){
+		return keyArray[index];
+	}
+
 	/************************************************************************************
 	 Enlarge the size of both Key and Value arrays by one
 	 	@return		int				- new size of map
@@ -296,17 +332,17 @@ public:
 		//create larger arrays
 		K *tempKeyA = new K[inc];
 		V *tempValA = new V[inc];
-		for (int i = capacity - lnth; i <= lnth; i++)
+		for (int i = 0; i < lnth; i++)
 		{
 			//copy across values to the new arrays
 			//K key = keyArray[i];
 			//V val = valArray[i];
-			if (getValuePointer(keyArray[i]))
-			{
+			// (getValuePointer(keyArray[i]))
+			//{
 				//std::cout << "Copying " << valArray[i] << " to index " << i << " (" << keyArray[i] << ")" << std::endl;
-				tempKeyA[i] = keyArray[i];
-				tempValA[i] = valArray[i];
-			}
+			tempKeyA[i] = keyArray[i];
+			tempValA[i] = valArray[i];
+			//}
 		}
 
 		// increment array size
@@ -320,8 +356,6 @@ public:
 		valArray = tempValA;
 		keyArray = tempKeyA;
 
-		//std::cout << " New array size: " << capacity - 1 << std::endl;
-		//std::cout << "Embiggening didn't fail" << std::endl;
 		return capacity;
 	};
 
@@ -356,9 +390,64 @@ public:
 		}
 	};
 
+	MapIter<K, V> begin()
+	{
+		return MapIter<K, V>(*this, 0);
+	}
+
+	MapIter<K, V> end()
+	{
+		return MapIter<K, V>(*this, lnth);
+	}
+
+	operator==(Keymap<K, V> km)
+	{
+		return true;
+	}
+
 	~Keymap()
 	{
 		delete[] keyArray;
 		delete[] valArray;
-	};
+	}
+};
+
+template <typename K, typename V>
+class MapIter
+{
+private:
+	Keymap<K, V> &km;
+	int index;
+public:
+	MapIter<K, V>(Keymap<K, V> &keymap, int kmIndex)
+		: km(keymap), index(kmIndex)
+	{
+	}
+
+	MapIter<K, V> &operator++()
+	{
+		++index;
+		return *this;
+	}
+
+	MapIter<K, V> &operator--()
+	{
+		--index;
+		return *this;
+	}
+
+	//operator==(MapIter<K, V> mi)
+	//{
+	//	return (this->index == mi.index) && (this->km == mi.km);
+	//}
+
+	operator!=(MapIter<K, V> mi)
+	{
+		return !((this->index == mi.index) && (this->km == mi.km));
+	}
+
+	K operator*()
+	{
+		return km.getKeyAtIndex(index);
+	}
 };
