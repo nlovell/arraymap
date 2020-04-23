@@ -418,6 +418,11 @@ class MapIter
 private:
 	Keymap<K, V> &km;
 	int index;
+
+	bool eq(MapIter<K, V> mi) {
+		return (this->index == mi.index) && (this->km == mi.km);
+	}
+
 public:
 	MapIter<K, V>(Keymap<K, V> &keymap, int kmIndex)
 		: km(keymap), index(kmIndex)
@@ -438,12 +443,12 @@ public:
 
 	bool operator==(MapIter<K, V> mi)
 	{
-		return (this->index == mi.index) && (this->km == mi.km);
+		return eq(mi);
 	}
 
 	bool operator!=(MapIter<K, V> mi)
 	{
-		return !(mi == this);
+		return !eq(mi);
 	}
 
 	K operator*()

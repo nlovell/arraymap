@@ -15,7 +15,14 @@ int main()
         km->insert(3, 'c');
         km->insert(4, 'd');
 
+		km->print();
+
+
+		//Test the iterator works forward
         for(auto iter = km->begin(); iter!=km->end(); ++iter){
             cout << km->getValue(iter.operator*()) << endl;
         }
+
+		km->insert(1, 'A');
+		
 }
