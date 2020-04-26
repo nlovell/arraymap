@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 #include <stddef.h>
 #include <array>
 #include <iostream>
@@ -400,7 +400,7 @@ public:
 		return MapIter<K, V>(*this, lnth);
 	}
 
-	operator==(Keymap<K, V> km)
+	bool operator==(Keymap<K, V> km)
 	{
 		return true;
 	}
@@ -418,6 +418,7 @@ class MapIter
 private:
 	Keymap<K, V> &km;
 	int index;
+
 public:
 	MapIter<K, V>(Keymap<K, V> &keymap, int kmIndex)
 		: km(keymap), index(kmIndex)
@@ -436,14 +437,18 @@ public:
 		return *this;
 	}
 
-	//operator==(MapIter<K, V> mi)
-	//{
-	//	return (this->index == mi.index) && (this->km == mi.km);
-	//}
+	bool operator==(MapIter<K, V> mi)
+	{
+		return (this->index == mi.index) && (this->km == mi.km);
+	}
 
-	operator!=(MapIter<K, V> mi)
+	bool operator!=(MapIter<K, V> mi)
 	{
 		return !((this->index == mi.index) && (this->km == mi.km));
+	}
+
+	bool eq(Keymap<K, V> mi) {
+		return true;
 	}
 
 	K operator*()
