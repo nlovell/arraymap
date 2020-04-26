@@ -29,6 +29,10 @@ public:
 		}
 
 		km.print();
+
+		for (auto iter = km.begin(); iter != km.end(); ++iter) {
+			cout << km.getValue(iter.operator*()) << endl;
+		}
 	}
 
 };
