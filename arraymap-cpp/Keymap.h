@@ -41,11 +41,6 @@ private:
 
 public:
 
-	Keymap(){
-		beginPtr = new MapIter<K, V>(*this, 0);
-		endPtr = new MapIter<K, V>(*this, lnth);
-	}
-
 	/************************************************************************************
 	Removes all values and resets the map to it's default state non-destructively.
 		No data pointed to within the map is removed.
@@ -419,7 +414,6 @@ public:
 	MapIter<K, V> & end()
 	{
 		updateIterPtrs();
-
 		return *endPtr;
 	}
 
