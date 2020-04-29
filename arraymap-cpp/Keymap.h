@@ -24,8 +24,8 @@ private:
 	//Every template needs a
 	friend class MapIter<K, V>;
 
-	MapIter<K, V> begin*;
-	MapIter<K, V> end*;
+	MapIter<K, V>* begin;
+	MapIter<K, V>* end;
 
 	/* The capacity of the array. */
 	int capacity = 1;
