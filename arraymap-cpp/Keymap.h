@@ -193,8 +193,11 @@ public:
 	************************************************************************************/
 	bool updatePair(K theKey, V theValue)
 	{
-		valArray[getIndex(theKey)] = theValue;
-		return true;
+		if (keyExists(theKey)) {
+			valArray[getIndex(theKey)] = theValue;
+			return true;
+		}
+		return false;
 	};
 
 	/************************************************************************************
