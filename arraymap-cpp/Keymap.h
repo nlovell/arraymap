@@ -3,6 +3,7 @@
 #include <array>
 #include <iostream>
 #include <string>
+#include "Keymap.h"
 
 /************************************************************************************
 	A class to map key:value pairs, built upon static C++ arrays.
@@ -20,7 +21,7 @@ template <typename K, typename V>
 class Keymap
 {
 private:
-    //Every template needs a
+	//Every template needs a
 	friend class MapIter<K, V>;
 
 	/* The capacity of the array. */
@@ -30,10 +31,10 @@ private:
 	int lnth = 0;
 
 	/* The array of pointers to Keys to be used within the Map. */
-	K *keyArray = new K[capacity];
+	K* keyArray = new K[capacity];
 
 	/* The array of pointers to Values to be used within the Map. */
-	V *valArray = new V[capacity];
+	V* valArray = new V[capacity];
 
 public:
 	/************************************************************************************
@@ -93,8 +94,8 @@ public:
 	/************************************************************************************
 	 Inserts a new key-value pair into the map, if the key provided is unique
 		 @param		K, theKey		- the key to identify the value
-	 				V, theValue		- the value to insert
-		 @return	bool			- 
+					V, theValue		- the value to insert
+		 @return	bool			-
 	************************************************************************************/
 	bool insert(K key, V value)
 	{
@@ -120,7 +121,7 @@ public:
 	/************************************************************************************
 	 Inserts a new key-value pair into the map if unique, or updates an existing value
 		 @param		K, theKey		- the key to identify the value
-	 				V, theValue		- the value to insert
+					V, theValue		- the value to insert
 		 @return	Returns True if inserted, False if updated.
 	************************************************************************************/
 	bool insertOrUpdate(K key, V value)
@@ -153,8 +154,8 @@ public:
 		}
 
 		//create smaller arrays
-		K *tempKeyA = new K[newCapacity];
-		V *tempValA = new V[newCapacity];
+		K* tempKeyA = new K[newCapacity];
+		V* tempValA = new V[newCapacity];
 
 		if (keyExists(theKey))
 		{
@@ -198,8 +199,8 @@ public:
 
 	/************************************************************************************
 	 Checks if a key exists in current key array
-	 	@param		K, theKey		- the key to check
-	 	@return		bool			- return true if theKey exists
+		@param		K, theKey		- the key to check
+		@return		bool			- return true if theKey exists
 	************************************************************************************/
 	bool keyExists(K theKey)
 	{
@@ -218,8 +219,8 @@ public:
 
 	/************************************************************************************
 	 Checks if a value exists in current key array
-	 	@param		V, value		- the value to check
-	 	@return		bool			- return true if value is present
+		@param		V, value		- the value to check
+		@return		bool			- return true if value is present
 	************************************************************************************/
 	bool valueExists(V value)
 	{
@@ -239,20 +240,20 @@ public:
 		@param		K, key			- the key to identify the value
 		@return		V*				- the pointer to return, or null
 	************************************************************************************/
-	V *getValuePointer(K key)
+	V* getValuePointer(K key)
 	{
 		return &valArray[getIndex(key)];
 
 		if (getIndex(key) != -1)
 		{
-			V *vt = &valArray[getIndex(key)];
+			V* vt = &valArray[getIndex(key)];
 			return vt;
 		};
 		return nullptr;
 	};
 
-	V *getValuePointerAtIndex(int index){
-		
+	V* getValuePointerAtIndex(int index) {
+
 		return &valArray[index];
 	}
 
@@ -271,7 +272,7 @@ public:
 		return valArray[index];
 	}
 
-	V getValue(K *keyPointer)
+	V getValue(K* keyPointer)
 	{
 		return *keyPointer;
 	};
@@ -284,7 +285,7 @@ public:
 	V getValueOrDefault(K key, V dflt)
 	{
 		if (keyExists(key)
-)
+			)
 		{
 			return getValue(key);
 		}
@@ -313,13 +314,13 @@ public:
 		return -1;
 	};
 
-	K getKeyAtIndex(int index){
+	K getKeyAtIndex(int index) {
 		return keyArray[index];
 	}
 
 	/************************************************************************************
 	 Enlarge the size of both Key and Value arrays by one
-	 	@return		int				- new size of map
+		@return		int				- new size of map
 	************************************************************************************/
 	int enlargeMap()
 	{
@@ -330,8 +331,8 @@ public:
 		int inc = capacity + capacity;
 
 		//create larger arrays
-		K *tempKeyA = new K[inc];
-		V *tempValA = new V[inc];
+		K* tempKeyA = new K[inc];
+		V* tempValA = new V[inc];
 		for (int i = 0; i < lnth; i++)
 		{
 			//copy across values to the new arrays
@@ -367,9 +368,9 @@ public:
 		//std::cout << "Printing contents of the map as [key:value] pairs. " << std::endl;
 		if (lnth > 0)
 		{
-			for (int i = 1; i <= lnth; i++)
+			for (int i = 0; i < lnth; i++)
 			{
-				V *ref = getValuePointer(keyArray[i]);
+				V* ref = getValuePointer(keyArray[i]);
 				if (ref != nullptr)
 				{
 					V derefVal = *ref;
@@ -378,8 +379,8 @@ public:
 				else
 				{
 					std::cout << "NULL"
-							  << " : "
-							  << "NULL" << std::endl;
+						<< " : "
+						<< "NULL" << std::endl;
 				}
 			}
 			std::cout << "\b\b " << std::endl;
@@ -400,9 +401,21 @@ public:
 		return MapIter<K, V>(*this, lnth);
 	}
 
-	bool operator==(Keymap<K, V> km)
+	bool operator==(Keymap<K, V> & km)
 	{
-		return true;
+		int i = 0;
+		for (const K& key : this.keyArray) {
+			if (!(km.keyArray[i] == key && km.valArray[i] == this.valArray[i])) {
+				return false;
+			}
+			i++;
+		}
+
+		return true;	
+	}
+
+	bool operator!=(Keymap<K, V> & km) {
+		return !(this == km);
 	}
 
 	~Keymap()
@@ -416,44 +429,33 @@ template <typename K, typename V>
 class MapIter
 {
 private:
-	Keymap<K, V> &km;
+	Keymap<K, V>& km;
 	int index;
-
-	bool eq(MapIter<K, V> mi) {
-		return (this->index == mi.index) && (this->km == mi.km);
-	}
-
-
 public:
-	MapIter<K, V>(Keymap<K, V> &keymap, int kmIndex)
+	MapIter<K, V>(Keymap<K, V>& keymap, int kmIndex)
 		: km(keymap), index(kmIndex)
-	{
-	}
+	{}
 
-	MapIter<K, V> &operator++()
+	MapIter<K, V>& operator++()
 	{
 		++index;
 		return *this;
 	}
 
-	MapIter<K, V> &operator--()
+	MapIter<K, V>& operator--()
 	{
 		--index;
 		return *this;
 	}
 
-	bool operator==(MapIter<K, V> mi)
+	bool operator==(const MapIter<K, V> & rhs)
 	{
-		return eq(mi);
+		return (this == rhs) && (this.index == rhs.index);
 	}
 
-	bool operator!=(MapIter<K, V> mi)
+	bool operator!=(MapIter<K, V>& rhs)
 	{
-		return !eq(mi);
-	}
-
-	bool eq(Keymap<K, V> mi) {
-		return true;
+		return !(operator==(rhs));
 	}
 
 	K operator*()
@@ -461,3 +463,4 @@ public:
 		return km.getKeyAtIndex(index);
 	}
 };
+

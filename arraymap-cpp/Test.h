@@ -19,20 +19,23 @@ class KeymapTest
 public:
 	KeymapTest() {}
 
-	void populate(K kArr[], V vArr[], int len) {
+	void populate(K kArr[], V vArr[], const int len) {
 		Keymap <K, V> km = *new Keymap <K, V>;
 
-		int ind = 0;
-		while (ind < len) {
-			km.insert(kArr[ind], vArr[ind]);
-			ind++;
+		for (int i = 0; i < len; i++) {
+			K ki = kArr[i];
+			V va = vArr[i];
+			km.insert(ki, va);
 		}
+
+		for (int i = 0; i < len; i++) {
+			//std::cout<< "Length: " << lnth << " | Val: " << value << std::endl;
+
+			std::cout << km.getValue(kArr[i]) << std::endl;
+		}
+
 
 		km.print();
-
-		for (auto iter = km.begin(); iter != km.end(); ++iter) {
-			std::cout << km.getValue(iter.operator*()) << std::endl;
-		}
 	}
 
 };
