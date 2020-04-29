@@ -26,6 +26,8 @@ private:
 
 	MapIter<K, V>* beginPtr = nullptr;
 	MapIter<K, V>* endPtr = nullptr;
+	MapIter<K, V>* beginPtrR = nullptr;
+	MapIter<K, V>* endPtrR = nullptr;
 
 	/* The capacity of the array. */
 	int capacity = 1;
@@ -406,14 +408,31 @@ public:
 		return *beginPtr;
 	}
 
+	MapIter<K, V>& beginR()
+	{
+		return *beginPtrR;
+	}
+
 	MapIter<K, V> & end()
 	{
 		return *endPtr;
 	}
 
+	MapIter<K, V>& endR()
+	{
+		if (endPtrR == nullptr) {
+			endPtrR = new MapIter<K, V>(*this, -1);
+		}
+
+		return *endPtrR;
+	}
+
 	void updateEndPtr() {
 		delete endPtr;
 		endPtr = new MapIter<K, V>(*this, lnth);
+
+		delete beginPtrR;
+		beginPtrR = new MapIter<K, V>(*this, lnth - 1);
 	}
 
 	bool operator==(Keymap<K, V> & km)
@@ -439,6 +458,8 @@ public:
 		delete[] valArray;
 		delete endPtr;
 		delete beginPtr;
+		delete endPtrR;
+		delete beginPtrR;
 	}
 };
 
@@ -472,6 +493,16 @@ public:
 	bool operator!=(MapIter<K, V> & rhs)
 	{
 		return !(operator==(rhs));
+	}
+
+	bool operator<=(MapIter<K, V>& rhs) 
+	{
+		return ((*this).km == rhs.km) && ((*this).index <= rhs.index);
+	}
+
+	bool operator>=(MapIter<K, V>& rhs)
+	{
+		return ((*this).km == rhs.km) && ((*this).index >= rhs.index);
 	}
 
 	K operator*()

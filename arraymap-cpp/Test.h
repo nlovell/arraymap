@@ -41,28 +41,29 @@ public:
 		ma();
 
 		//Length test
-		printTest("Attempting to reinsert data", "isEmpty", "False");
+		printTest("Attempting to reinsert data", "insert(K,V)", "Set should return the same as above, with no additions");
 		for (int i = 0; i < len; i++) {
 			K ki = kArr[i];
 			V va = vArr[i];
 			km.insert(ki, va);
 		}
+		ma();
 
 		//Test the iterator forwardly
 		printTestNoBefore("Run the iterator forward", "Iterator", "1, 2, 3 (etc)");
 		for (MapIter<K,V> iterator = km.begin();  iterator  != km.end(); ++iterator) {
-			std::cout << "[" << *iterator << ":" << km.getValue(*iterator) << "]";
+			std::cout << "[" << *iterator << ":" << km.getValue(*iterator) << "], ";
 		}
-		std::cout << std::endl;
+		std::cout << "\b\b  " << std::endl;
 		ma();
 
 
 		//Test the iterator backwardly
 		printTestNoBefore("Run the iterator backward", "Iterator", "(etc), 3, 2, 1");
-		for (MapIter<K, V> iterator = km.end(); iterator != km.begin(); --iterator) {
-			std::cout << "[" << *iterator << ":" << km.getValue(*iterator) << "]";
+		for (MapIter<K, V> iterator = km.beginR(); iterator != km.endR(); --iterator) {
+			std::cout << "[" << *iterator << ":" << km.getValue(*iterator) << "], ";
 		}
-		std::cout << std::endl;
+		std::cout << "\b\b  " << std::endl;
 		ma();
 
 		//for (auto iter = km.begin(); iter != km.end(); ++iter) {
@@ -70,11 +71,11 @@ public:
 		//}
 
 		printTestNoBefore("Printing each value", "getValue(K)", "Each value is printed to the console.");
-		std::cout << "|";
+		std::cout << "[";
 		for (int i = 0; i < len; i++) {
-			std::cout << km.getValue(kArr[i]) << "|";
+			std::cout << "[" << km.getValue(kArr[i]) << "], ";
 		}
-		std::cout << std::endl;
+		std::cout << "\b\b  " << std::endl;
 		ma();
 
 		//Update a pair
