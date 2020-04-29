@@ -49,7 +49,7 @@ public:
 	{
 		capacity = 1;
 		lnth = 0;
-		updateIterPtrs();
+		updateEndPtr();
 
 		delete[] keyArray;
 		delete[] valArray;
@@ -113,21 +113,12 @@ public:
 			keyArray[lnth] = *new K(key);
 			valArray[lnth] = *new V(value);
 			lnth++;
-			updateIterPtrs();
+			updateEndPtr();
 
 			//std::cout<< "Length: " << lnth << " | Val: " << value << std::endl;
 			return true;
 		};
 	};
-
-	void updateIterPtrs() {
-		delete endPtr;
-		endPtr = new MapIter<K, V>(*this, lnth);
-
-		if (beginPtr == nullptr) {
-			beginPtr = new MapIter<K, V>(*this, 0);
-		}
-	}
 
 	/************************************************************************************
 	 Inserts a new key-value pair into the map if unique, or updates an existing value
@@ -170,7 +161,7 @@ public:
 		if (keyExists(theKey))
 		{
 			lnth--;
-			updateIterPtrs();
+			updateEndPtr();
 
 			int j = 0;
 			for (int i = 0; i < capacity; i++)
@@ -408,14 +399,22 @@ public:
 
 	MapIter<K, V> & begin()
 	{
-		updateIterPtrs();
+		if (beginPtr == nullptr) {
+			beginPtr = new MapIter<K, V>(*this, 0);
+		}
+
 		return *beginPtr;
 	}
 
 	MapIter<K, V> & end()
 	{
-		updateIterPtrs();
+		updateEndPtr();
 		return *endPtr;
+	}
+
+	void updateEndPtr() {
+		delete endPtr;
+		endPtr = new MapIter<K, V>(*this, lnth);
 	}
 
 	bool operator==(Keymap<K, V> & km)
