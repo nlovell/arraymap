@@ -128,6 +128,9 @@ public:
 	void updateEnd() {
 		delete endPtr;
 		endPtr = new MapIter<K, V>(*this, lnth);
+
+		delete beginPtr;
+		beginPtr = new MapIter<K, V>(*this, 0);
 	}
 
 	/************************************************************************************

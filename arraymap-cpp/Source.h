@@ -18,8 +18,8 @@ int main()
 	KeymapTest<int, char> intChar = *new KeymapTest<int, char>;
 	intChar.test(intArr, charArr, 5, 99);
 
-	KeymapTest<string, bool> strBool = *new KeymapTest<string, bool>;
-	strBool.test(strArr, boolArr, 5, false);
+	//KeymapTest<string, bool> strBool = *new KeymapTest<string, bool>;
+	//strBool.test(strArr, boolArr, 5, false);
 
 	KeymapTest<string, string> strStr = *new KeymapTest<string, string>;
 	strStr.test(strArr, strArr, 5, "fizz");

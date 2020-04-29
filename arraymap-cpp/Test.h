@@ -49,10 +49,16 @@ public:
 		}
 
 		//Test the iterator
-		std::cout << "An attempt at running the iterator" << std::endl;
-		for (MapIter<K,V> iterator = km.begin(); iterator != km.end() ; ++iterator) {
-			std::cout << *iterator << "|" << km.getValue(*iterator);
+		std::cout << "An attempt at running the iterator forward" << std::endl;
+		for (MapIter<K,V> iterator = km.begin();  iterator  != km.end(); ++iterator) {
+			std::cout << "[" << *iterator << ":" << km.getValue(*iterator) << "]";
 		}
+
+		std::cout << "An attempt at running the iterator forward" << std::endl;
+		for (MapIter<K, V> iterator = km.begin(); iterator != km.end(); ++iterator) {
+			std::cout << "[" << *iterator << ":" << km.getValue(*iterator) << "]";
+		}
+
 
 		//for (auto iter = km.begin(); iter != km.end(); ++iter) {
 		//	std::cout << km.getValue(iter.operator*()) << std::endl;
