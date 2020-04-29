@@ -401,13 +401,14 @@ public:
 
 	bool operator==(Keymap<K, V> & km)
 	{
+		/*
 		int i = 0;
-		for (const K& key : this.keyArray) {
+		for (const K& key : keyArray) {
 			if (!(km.keyArray[i] == key && km.valArray[i] == this.valArray[i])) {
 				return false;
 			}
 			i++;
-		}
+		} */
 		return true;	
 	}
 
@@ -447,7 +448,7 @@ public:
 
 	bool operator==(MapIter<K, V> & rhs)
 	{
-		return (this.km == rhs.km) && (this.index == rhs.index);
+		return (km == rhs.km); //&& (this.index == rhs.index);
 	}
 
 	bool operator!=(MapIter<K, V> & rhs)

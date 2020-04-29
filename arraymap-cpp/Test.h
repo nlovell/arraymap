@@ -48,9 +48,10 @@ public:
 			km.insert(ki, va);
 		}
 
+
 		//Test the iterator
 		std::cout << "An attempt at running the iterator" << std::endl;
-		for (auto iterator = km.begin(); km.end() != iterator; ++iterator) {
+		for (MapIter<K,V> iterator = km.begin(); km.end() != iterator; ++iterator) {
 			std::cout << *iterator << "|" << km.getValue(*iterator) << std::endl;
 		}
 
