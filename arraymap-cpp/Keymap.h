@@ -438,6 +438,8 @@ public:
 	{
 		delete[] keyArray;
 		delete[] valArray;
+		delete endPtr;
+		delete beginPtr;
 	}
 };
 
