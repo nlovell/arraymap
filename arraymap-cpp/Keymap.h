@@ -445,12 +445,12 @@ public:
 		return *this;
 	}
 
-	bool operator==(const MapIter<K, V> & rhs)
+	bool operator==(MapIter<K, V> & rhs)
 	{
-		return (this == rhs) && (this.index == rhs.index);
+		return (this.km == rhs.km) && (this.index == rhs.index);
 	}
 
-	bool operator!=(MapIter<K, V>& rhs)
+	bool operator!=(MapIter<K, V> & rhs)
 	{
 		return !(operator==(rhs));
 	}
@@ -460,4 +460,3 @@ public:
 		return km.getKeyAtIndex(index);
 	}
 };
-

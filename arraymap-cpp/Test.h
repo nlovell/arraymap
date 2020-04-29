@@ -50,9 +50,10 @@ public:
 
 		//Test the iterator
 		std::cout << "An attempt at running the iterator" << std::endl;
-		for (auto iterator = km.begin(); iterator != km.end(); ++iterator) {
-			std::cout << iterator.operator*() << "|" << km.getValue(iterator.operator*()); std::endl;
+		for (auto iterator = km.begin(); km.end() != iterator; ++iterator) {
+			std::cout << *iterator << "|" << km.getValue(*iterator) << std::endl;
 		}
+
 		//for (auto iter = km.begin(); iter != km.end(); ++iter) {
 		//	std::cout << km.getValue(iter.operator*()) << std::endl;
 		//}
