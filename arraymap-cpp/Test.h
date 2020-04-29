@@ -21,8 +21,6 @@ public:
 
 	Keymap <K, V> km = *new Keymap <K, V>;
 
-	KeymapTest() {}
-
 	void test(const K kArr[], const V vArr[], const int len, const V valDef) {
 
 		//Testing empty
@@ -38,14 +36,26 @@ public:
 		}
 
 		//Testing not empty
-		printTest("Checking map isn't empty after laoding with data", "isEmpty", "False");
+		printTest("Checking map isn't empty after loading with data", "isEmpty", "False");
 		km.isEmpty();
 		ma();
 
-		//Test the iterator
-		for (auto iter = km.begin(); iter != km.end(); ++iter) {
-			std::cout << km.getValue(iter.operator*()) << std::endl;
+		//Length test
+		printTest("Attempting to reinsert data", "isEmpty", "False");
+		for (int i = 0; i < len; i++) {
+			K ki = kArr[i];
+			V va = vArr[i];
+			km.insert(ki, va);
 		}
+
+		//Test the iterator
+		std::cout << "An attempt at running the iterator" << std::endl;
+		for (auto iterator = km.begin(); iterator != km.end(); ++iterator) {
+			std::cout << iterator.operator*() << "|" << km.getValue(iterator.operator*()); std::endl;
+		}
+		//for (auto iter = km.begin(); iter != km.end(); ++iter) {
+		//	std::cout << km.getValue(iter.operator*()) << std::endl;
+		//}
 
 		printTestNoBefore("Printing each value", "getValue(K)", "Each value is printed to the console.");
 		std::cout << "|";
