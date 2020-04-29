@@ -412,11 +412,14 @@ public:
 
 	MapIter<K, V> & begin()
 	{
+		updateIterPtrs();
 		return *beginPtr;
 	}
 
 	MapIter<K, V> & end()
 	{
+		updateIterPtrs();
+
 		return *endPtr;
 	}
 
