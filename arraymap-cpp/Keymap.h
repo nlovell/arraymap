@@ -448,7 +448,7 @@ public:
 
 	bool operator==(MapIter<K, V> & rhs)
 	{
-		return ((*this).km == (*rhs).km) && ((*this).index == (*rhs).index);
+		return ((*this).km == rhs.km) && ((*this).index == rhs.index);
 	}
 
 	bool operator!=(MapIter<K, V> & rhs)
