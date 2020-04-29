@@ -42,8 +42,8 @@ private:
 public:
 
 	Keymap(){
-		begin = new MapIter<K, V>(*this, 0);
-		end = new MapIter<K, V>(*this, lnth);
+		beginPtr = new MapIter<K, V>(*this, 0);
+		endPtr = new MapIter<K, V>(*this, lnth);
 	}
 
 	/************************************************************************************
@@ -126,8 +126,8 @@ public:
 	};
 
 	void updateEnd() {
-		delete end;
-		end = new MapIter<K, V>(*this, lnth);
+		delete endPtr;
+		endPtr = new MapIter<K, V>(*this, lnth);
 	}
 
 	/************************************************************************************
@@ -409,12 +409,12 @@ public:
 
 	MapIter<K, V> & begin()
 	{
-		return *begin;
+		return *beginPtr;
 	}
 
 	MapIter<K, V> & end()
 	{
-		return *end;
+		return *endPtr;
 	}
 
 	bool operator==(Keymap<K, V> & km)
