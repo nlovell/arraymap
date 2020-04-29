@@ -124,8 +124,9 @@ public:
 		delete endPtr;
 		endPtr = new MapIter<K, V>(*this, lnth);
 
-		delete beginPtr;
-		beginPtr = new MapIter<K, V>(*this, 0);
+		if (beginPtr == nullptr) {
+			beginPtr = new MapIter<K, V>(*this, 0);
+		}
 	}
 
 	/************************************************************************************
