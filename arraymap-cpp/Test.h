@@ -51,8 +51,8 @@ public:
 
 		//Test the iterator
 		std::cout << "An attempt at running the iterator" << std::endl;
-		for (MapIter<K,V> iterator = km.begin(); km.end() != iterator; ++iterator) {
-			std::cout << *iterator << "|" << km.getValue(*iterator) << std::endl;
+		for (MapIter<K,V> iterator = km.begin(); iterator != km.end() ; ++iterator) {
+			std::cout << *iterator << "|" << km.getValue(*iterator);
 		}
 
 		//for (auto iter = km.begin(); iter != km.end(); ++iter) {
