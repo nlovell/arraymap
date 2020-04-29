@@ -24,8 +24,8 @@ private:
 	//Every template needs a
 	friend class MapIter<K, V>;
 
-	MapIter<K, V>* beginPtr;
-	MapIter<K, V>* endPtr;
+	MapIter<K, V>* beginPtr = nullptr;
+	MapIter<K, V>* endPtr = nullptr;
 
 	/* The capacity of the array. */
 	int capacity = 1;
@@ -54,7 +54,7 @@ public:
 	{
 		capacity = 1;
 		lnth = 0;
-		updateEnd();
+		updateIterPtrs();
 
 		delete[] keyArray;
 		delete[] valArray;
@@ -118,14 +118,14 @@ public:
 			keyArray[lnth] = *new K(key);
 			valArray[lnth] = *new V(value);
 			lnth++;
-			updateEnd();
+			updateIterPtrs();
 
 			//std::cout<< "Length: " << lnth << " | Val: " << value << std::endl;
 			return true;
 		};
 	};
 
-	void updateEnd() {
+	void updateIterPtrs() {
 		delete endPtr;
 		endPtr = new MapIter<K, V>(*this, lnth);
 
@@ -174,7 +174,7 @@ public:
 		if (keyExists(theKey))
 		{
 			lnth--;
-			updateEnd();
+			updateIterPtrs();
 
 			int j = 0;
 			for (int i = 0; i < capacity; i++)
@@ -454,8 +454,7 @@ private:
 	int index;
 public:
 	MapIter<K, V>(Keymap<K, V>& keymap, int kmIndex)
-		: km(keymap), index(kmIndex)
-	{}
+		: km(keymap), index(kmIndex){}
 
 	MapIter<K, V>& operator++()
 	{
