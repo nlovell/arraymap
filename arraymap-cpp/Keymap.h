@@ -43,11 +43,6 @@ public:
 	************************************************************************************/
 	void reset()
 	{
-		for (int i = 0; i < lnth; i++)
-		{
-			removePair(keyArray[lnth]);
-		}
-
 		capacity = 1;
 		lnth = 0;
 
@@ -413,12 +408,11 @@ public:
 			}
 			i++;
 		}
-
 		return true;	
 	}
 
 	bool operator!=(Keymap<K, V> & km) {
-		return !(this == km);
+		return !(operator==(km));
 	}
 
 	~Keymap()

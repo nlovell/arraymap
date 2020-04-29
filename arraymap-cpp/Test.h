@@ -27,7 +27,7 @@ public:
 
 		//Testing empty
 		printTestNoBefore("Checking map is blank", "isEmpty", "True");
-		std::cout << km.isEmpty();
+		std::cout << km.isEmpty() << std::endl;
 		ma();
 
 		//Loading the dataset.
@@ -38,16 +38,18 @@ public:
 		}
 
 		//Testing not empty
-		printTest("Checking map isn't blank", "isEmpty", "False");
+		printTest("Checking map isn't empty after laoding with data", "isEmpty", "False");
 		km.isEmpty();
 		ma();
 
-		//Iterate through, and print each one
+		//Test the iterator
+		for (auto iter = km.begin(); iter != km.end(); ++iter) {
+			std::cout << km.getValue(iter.operator*()) << std::endl;
+		}
 
 		printTestNoBefore("Printing each value", "getValue(K)", "Each value is printed to the console.");
 		std::cout << "|";
 		for (int i = 0; i < len; i++) {
-			//std::cout<< "Length: " << lnth << " | Val: " << value << std::endl;
 			std::cout << km.getValue(kArr[i]) << "|";
 		}
 		std::cout << std::endl;
@@ -93,6 +95,11 @@ public:
 		//Get capacity
 		printTestNoBefore("Get capacity", "getCapacity()", "Capacity >= number of elements");
 		std::cout << km.getCapacity() << std::endl;
+		ma();
+
+		//Test the reset function
+		printTest("Reset the Map", "reset()", "Map should be empty");
+		km.reset();
 		ma();
 
 
