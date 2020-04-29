@@ -24,6 +24,9 @@ private:
 	//Every template needs a
 	friend class MapIter<K, V>;
 
+	MapIter<K, V> begin*;
+	MapIter<K, V> end*;
+
 	/* The capacity of the array. */
 	int capacity = 1;
 
@@ -37,14 +40,22 @@ private:
 	V* valArray = new V[capacity];
 
 public:
+
+	Keymap(){
+		begin = new MapIter<K, V>(*this, 0);
+		end = new MapIter<K, V>(*this, lnth);
+
+	}
+
 	/************************************************************************************
 	Removes all values and resets the map to it's default state non-destructively.
-		All data pointed to within the map is *not* removed.
+		No data pointed to within the map is removed.
 	************************************************************************************/
 	void reset()
 	{
 		capacity = 1;
 		lnth = 0;
+		updateEnd();
 
 		delete[] keyArray;
 		delete[] valArray;
@@ -108,10 +119,17 @@ public:
 			keyArray[lnth] = *new K(key);
 			valArray[lnth] = *new V(value);
 			lnth++;
+			updateEnd();
+
 			//std::cout<< "Length: " << lnth << " | Val: " << value << std::endl;
 			return true;
 		};
 	};
+
+	void updateEnd() {
+		delete end;
+		end = new MapIter<K, V>(*this, lnth);
+	}
 
 	/************************************************************************************
 	 Inserts a new key-value pair into the map if unique, or updates an existing value
@@ -121,7 +139,6 @@ public:
 	************************************************************************************/
 	bool insertOrUpdate(K key, V value)
 	{
-
 		bool test = insert(key, value);
 		if (!test)
 		{
@@ -155,6 +172,8 @@ public:
 		if (keyExists(theKey))
 		{
 			lnth--;
+			updateEnd();
+
 			int j = 0;
 			for (int i = 0; i < capacity; i++)
 			{
@@ -389,14 +408,14 @@ public:
 		}
 	};
 
-	MapIter<K, V> begin()
+	MapIter<K, V> & begin()
 	{
-		return MapIter<K, V>(*this, 0);
+		return *begin;
 	}
 
-	MapIter<K, V> end()
+	MapIter<K, V> & end()
 	{
-		return MapIter<K, V>(*this, lnth);
+		return *end;
 	}
 
 	bool operator==(Keymap<K, V> & km)
