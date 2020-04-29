@@ -408,7 +408,6 @@ public:
 
 	MapIter<K, V> & end()
 	{
-		updateEndPtr();
 		return *endPtr;
 	}
 
