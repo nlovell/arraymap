@@ -24,8 +24,8 @@ private:
 	//Every template needs a
 	friend class MapIter<K, V>;
 
-	MapIter<K, V>* begin;
-	MapIter<K, V>* end;
+	MapIter<K, V>* beginPtr;
+	MapIter<K, V>* endPtr;
 
 	/* The capacity of the array. */
 	int capacity = 1;
@@ -44,7 +44,6 @@ public:
 	Keymap(){
 		begin = new MapIter<K, V>(*this, 0);
 		end = new MapIter<K, V>(*this, lnth);
-
 	}
 
 	/************************************************************************************
