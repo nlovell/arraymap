@@ -16,14 +16,14 @@ int main()
 	int count = 10;
 
 	//Arrays to store default data to run tests on
-	int intArr[] =   {  1,  2,  3,  4,  5,  6,  7,  8,  9, 10};
-	char charArr[] = { 'A','B','C','D','E','F','G','H','I','J'};
-	bool boolArr[] = {  0,  1,  1,  0,  1,  0,  0,  1,  0,  1 };
+	int intArr[] = { 1,  2,  3,  4,  5,  6,  7,  8,  9, 10 };
+	char charArr[] = { 'A','B','C','D','E','F','G','H','I','J' };
+	bool boolArr[] = { 0,  1,  1,  0,  1,  0,  0,  1,  0,  1 };
 	float floatArr[] = { 0.14754676f, 0.24754676f, 0.34754676f, 0.44754676f, 0.54754676f,
 						 0.64754676f, 0.74754676f, 0.84754676f, 0.94754676f, 0.104754676f };
 	double doubArr[] = { 1.111, 1.222, 1.333, 1.444, 1.555, 1.666, 1.777, 1.888, 1.999, 1.10101 };
-	string strArr[] = { "foo", "bar", "baz", "boo", "far", 
-						"fizz", "buzz", "bizz", "fuzz", "fozz"};
+	string strArr[] = { "foo", "bar", "baz", "boo", "far",
+						"fizz", "buzz", "bizz", "fuzz", "fozz" };
 
 	//Default values for getValueOrDefault() method
 	int defInt = 99;
@@ -53,4 +53,16 @@ int main()
 	//Runs the KeymapTest with K:V types Float:Double
 	KeymapTest<float, double> floatDoub = *new KeymapTest<float, double >;
 	floatDoub.test(floatArr, doubArr, count, defDoub);
+
+
+	const int stressTestLimiter = 1000;
+	//Stress testing the keymap with ^ values
+	int stress[stressTestLimiter];
+
+	for (int i = 0; i < stressTestLimiter; ++i) {
+		stress[i] = i;
+	}
+
+	KeymapTest<int, int> stressTest = *new KeymapTest<int, int>;
+	stressTest.test(stress, stress, stressTestLimiter, -1);
 }

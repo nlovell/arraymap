@@ -13,7 +13,6 @@
 	Designed and implemented by Student 20107104674840.
 *************************************************************************************/
 
-//A happy little Keymap template
 template <typename K, typename V>
 class KeymapTest
 {
@@ -150,8 +149,6 @@ public:
 		printTest("Reset the Map", "reset()", "Map should be empty");
 		km.reset();
 		ma();
-
-
 
 		//Testing not empty
 		printTest("Attempting to populate map using pointers", "insert(K,V), isEmpty()", "Populated array");
