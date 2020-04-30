@@ -4,12 +4,13 @@
 #include <iostream>
 #include <string>
 #include "Keymap.h"
+#include <typeinfo>
 
 /************************************************************************************
 	A class to test the map.
 	@types		K					- The type of Key to be used
 				V					- The type of Value to be used
-	Designed and implemented by Student 20107104674840, November 2019.
+	Designed and implemented by Student 20107104674840.
 *************************************************************************************/
 
 //A happy little Keymap template
@@ -21,31 +22,56 @@ public:
 
 	Keymap <K, V> km = *new Keymap <K, V>;
 
-	void test(const K kArr[], const V vArr[], const int len, const V valDef) {
+	void test(K kArr[], V vArr[], int len, V valDef) {
+
+		std::cout << "   MAP KEY TYPE: " << typeid(K).name() << std::endl << " MAP VALUE TYPE: " << typeid(V).name() << std::endl << std::endl;
 
 		//Testing empty
 		printTestNoBefore("Checking map is blank", "isEmpty", "True");
 		std::cout << km.isEmpty() << std::endl;
 		ma();
 
+		//Test insert NULL key
+		printTest("Attempting KEY insert using nullptr keyword", "insert(nullptr,v)", "Empty map");
+		km.insert(nullptr, vArr[0]);
+		ma();
+
+		//Test insert NULL value
+		printTest("Attempting VALUE insert using NULL keyword", "insert(k,nullptr)", "Empty map");
+		km.insert(kArr[0], nullptr);
+		ma();
+
+		//Test insert both NULL key and value
+		printTest("Attempting VALUE and KEY insert using NULL keyword", "insert(k,nullptr)", "Empty map");
+		km.insert(nullptr, nullptr);
+		ma();
+
+		//Testing not empty
+		printTest("Attempting to populate map using values", "insert(K,V), isEmpty()", "Populated array");
 		//Loading the dataset.
 		for (int i = 0; i < len; i++) {
 			K ki = kArr[i];
 			V va = vArr[i];
 			km.insert(ki, va);
 		}
-
-		//Testing not empty
-		printTest("Checking map isn't empty after loading with data", "isEmpty", "False");
 		km.isEmpty();
 		ma();
 
-		//Length test
+		//Reinsertion
 		printTest("Attempting to reinsert data", "insert(K,V)", "Set should return the same as above, with no additions");
 		for (int i = 0; i < len; i++) {
 			K ki = kArr[i];
 			V va = vArr[i];
 			km.insert(ki, va);
+		}
+		ma();
+
+		//Reinsertion
+		printTest("Attempting to reinsert data using pointers", "insert(K,V)", "Set should return the same as above, with no additions");
+		for (int i = 0; i < len; i++) {
+			K* kip = &kArr[i];
+			V* vap = &vArr[i];
+			km.insert(kip, vap);
 		}
 		ma();
 
@@ -125,6 +151,18 @@ public:
 		km.reset();
 		ma();
 
+
+
+		//Testing not empty
+		printTest("Attempting to populate map using pointers", "insert(K,V), isEmpty()", "Populated array");
+		//Loading the dataset.
+		for (int i = 0; i < len; i++) {
+			K* kip = &kArr[i];
+			V* vap = &vArr[i];
+			km.insert(kip, vap);
+		}
+		km.isEmpty();
+		ma();
 
 		std::cout << std::endl << "---------------------------------------------------" << std::endl << std::endl;
 	}

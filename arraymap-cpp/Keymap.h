@@ -9,7 +9,7 @@
 	A class to map key:value pairs, built upon static C++ arrays.
 	@types		K					- The type of Key to be used
 				V					- The type of Value to be used
-	Designed and implemented by Student 20107104674840, November 2019.
+	Designed and implemented by Student 20107104674840.
 *************************************************************************************/
 
 //The iterator needs to be forward-declared.
@@ -112,8 +112,8 @@ public:
 				enlargeMap();
 			}
 
-			keyArray[lnth] = *new K(key);
-			valArray[lnth] = *new V(value);
+			keyArray[lnth] = key;
+			valArray[lnth] = value;
 			lnth++;
 			updateEndPtr();
 
@@ -121,6 +121,48 @@ public:
 			return true;
 		};
 	};
+
+	/************************************************************************************
+	 Inserts a new key-value pair into the map, if the key provided is unique
+		 @param		K*, theKey		- the pointer to a key to identify the value
+					V, theValue		- the value to insert
+		 @return	bool			-
+	************************************************************************************/
+	bool insert(K* key, V value) {
+		if (key != nullptr) {
+			return insert(*key, value);
+		}
+
+		return false;
+	}
+
+	/************************************************************************************
+	 Inserts a new key-value pair into the map, if the key provided is unique
+		 @param		K, theKey		- the key to identify the value
+					V*, theValue	- the pointer to a value to insert
+		 @return	bool			-
+	************************************************************************************/
+	bool insert(K key, V *value) {
+		if (value != nullptr) {
+			return insert(key, *value);
+		}
+
+		return false;
+	}
+
+	/************************************************************************************
+	 Inserts a new key-value pair into the map, if the key provided is unique
+		 @param		K*, theKey		- the pointer to a key to identify the value
+					V*, theValue	- the pointer to a value to insert
+		 @return	bool			-
+	************************************************************************************/
+	bool insert(K* key, V* value) {
+		if (key != nullptr && value != nullptr) {
+			return insert(*key, *value);
+		}
+
+		return false;
+	}
 
 	/************************************************************************************
 	 Inserts a new key-value pair into the map if unique, or updates an existing value
