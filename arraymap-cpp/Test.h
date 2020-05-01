@@ -110,7 +110,7 @@ public:
 
 		//Delete a pair
 		printTest("Removing a pair", "removePair(K)", "Pair at position 0 will be removed");
-		km.removePair(kArr[0]);
+		km.removePair(kArr[0]);WS
 		ma();
 
 		//Update a removed pair - nothing should happen
@@ -124,7 +124,7 @@ public:
 		ma();
 
 		//Get Value or Default !(exists)
-		printTestNoBefore("Getting the value if exists, or a default value", "getValueOrDefault(K,default)", "");
+		printTestNoBefore("Getting the value if exists, or a default value", "getValueOrDefault(K,default)", "Default value");
 		std::cout << km.getValueOrDefault(kArr[0], valDef);
 		std::cout << std::endl;
 		ma();
@@ -135,7 +135,7 @@ public:
 		ma();
 
 		//Get Value or Default (exists)
-		printTestNoBefore("Getting the value if exists, or a default value", "getValueOrDefault(K,default)", "");
+		printTestNoBefore("Getting the value if exists, or a default value", "getValueOrDefault(K,default)", "Actual value");
 		std::cout << km.getValueOrDefault(kArr[0], valDef);
 		std::cout << std::endl;
 		ma();

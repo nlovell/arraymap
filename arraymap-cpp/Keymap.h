@@ -185,7 +185,6 @@ public:
 	Removes a key-value pair based on the key
 		@param		K, theKey		- the key to remove
 	************************************************************************************/
-
 	bool removePair(K theKey)
 	{
 		int newCapacity = capacity;
@@ -301,7 +300,11 @@ public:
 		};
 		return nullptr;
 	};
-
+	/************************************************************************************
+	 Gets the pointer for a value stored in the map for a given Key index
+		@param		int, index		- the key index to identify the value
+		@return		V*				- the pointer to return, or null
+	************************************************************************************/
 	V* getValuePointerAtIndex(int index) {
 
 		return &valArray[index];
@@ -317,11 +320,21 @@ public:
 		return *getValuePointer(key);
 	};
 
+	/************************************************************************************
+	 Gets the value stored in the map for a given Key index
+		@param		int, index		- the key index to identify the value
+		@return		V*				- the pointer to return, or null
+	************************************************************************************/
 	V getValueAtIndex(int index)
 	{
 		return valArray[index];
 	}
 
+	/************************************************************************************
+	 Gets the value stored in the map for a given Key pointer
+		@param		K*, index		- the key pointer to identify the value
+		@return		V*				- the pointer to return, or null
+	************************************************************************************/
 	V getValue(K* keyPointer)
 	{
 		return *keyPointer;
@@ -364,6 +377,11 @@ public:
 		return -1;
 	};
 
+	/************************************************************************************
+	 Gets the key of a given index
+		@param		int					- The index to find the key of.
+		@return		K, key				- The key.
+	************************************************************************************/
 	K getKeyAtIndex(int index) {
 		return keyArray[index];
 	}
@@ -441,6 +459,10 @@ public:
 		}
 	};
 
+
+	/************************************************************************************
+		Iterator Functions
+	************************************************************************************/
 	MapIter<K, V> & begin()
 	{
 		if (beginPtr == nullptr) {
@@ -477,17 +499,20 @@ public:
 		beginPtrR = new MapIter<K, V>(*this, lnth - 1);
 	}
 
+	/************************************************************************************
+		Overrides
+	************************************************************************************/
+
+	//A keymap is considered the same if it contains the same mappings
 	bool operator==(Keymap<K, V> & km)
 	{
-		/*
-		int i = 0;
-		for (const K& key : keyArray) {
-			if (!(km.keyArray[i] == key && km.valArray[i] == this.valArray[i])) {
+		
+		for (int i = 0; i < lnth; ++i) {
+			if (!(km.keyArray[i] == keyArray[i]) && 
+			    !(km.valArray[i] == valArray[i])) {
 				return false;
 			}
-			i++;
-		} */
-		return true;	
+		} 
 	}
 
 	bool operator!=(Keymap<K, V> & km) {
