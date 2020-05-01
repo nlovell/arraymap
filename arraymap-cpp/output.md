@@ -1,9 +1,8 @@
-
 # Keymap.h - Test Output
+
 Running `Source.h` will invoke the `KeymapTest` class across multiple distinct datatypes. Below is a copy of the console output after running this test process.
 
-```
-   MAP KEY TYPE: int
+```   MAP KEY TYPE: int
  MAP VALUE TYPE: char
 
         TESTING: Checking map is blank
@@ -92,7 +91,7 @@ EXPECTED RESULT: A new pair will be inserted at the end
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Default value
          RESULT: J
       MAP AFTER: [2:B], [3:C], [4:D], [5:E], [6:F], [7:G], [8:H], [9:I], [10:J], [1:J]
 
@@ -104,7 +103,7 @@ EXPECTED RESULT: The new pair should be updated
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Actual value
          RESULT: A
       MAP AFTER: [2:B], [3:C], [4:D], [5:E], [6:F], [7:G], [8:H], [9:I], [10:J], [1:A]
 
@@ -218,7 +217,7 @@ EXPECTED RESULT: A new pair will be inserted at the end
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Default value
          RESULT: 1
       MAP AFTER: [bar:1], [baz:1], [boo:0], [far:1], [fizz:0], [buzz:0], [bizz:1], [fuzz:0], [fozz:1], [foo:1]
 
@@ -230,7 +229,7 @@ EXPECTED RESULT: The new pair should be updated
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Actual value
          RESULT: 0
       MAP AFTER: [bar:1], [baz:1], [boo:0], [far:1], [fizz:0], [buzz:0], [bizz:1], [fuzz:0], [fozz:1], [foo:0]
 
@@ -344,7 +343,7 @@ EXPECTED RESULT: A new pair will be inserted at the end
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Default value
          RESULT: fozz
       MAP AFTER: [bar:bar], [baz:baz], [boo:boo], [far:far], [fizz:fizz], [buzz:buzz], [bizz:bizz], [fuzz:fuzz], [fozz:fozz], [foo:fozz]
 
@@ -356,7 +355,7 @@ EXPECTED RESULT: The new pair should be updated
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Actual value
          RESULT: foo
       MAP AFTER: [bar:bar], [baz:baz], [boo:boo], [far:far], [fizz:fizz], [buzz:buzz], [bizz:bizz], [fuzz:fuzz], [fozz:fozz], [foo:foo]
 
@@ -470,7 +469,7 @@ EXPECTED RESULT: A new pair will be inserted at the end
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Default value
          RESULT: 0.104755
       MAP AFTER: [1.222:0.247547], [1.333:0.347547], [1.444:0.447547], [1.555:0.547547], [1.666:0.647547], [1.777:0.747547], [1.888:0.847547], [1.999:0.947547], [1.10101:0.104755], [1.111:0.104755]
 
@@ -482,7 +481,7 @@ EXPECTED RESULT: The new pair should be updated
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Actual value
          RESULT: 0.147547
       MAP AFTER: [1.222:0.247547], [1.333:0.347547], [1.444:0.447547], [1.555:0.547547], [1.666:0.647547], [1.777:0.747547], [1.888:0.847547], [1.999:0.947547], [1.10101:0.104755], [1.111:0.147547]
 
@@ -596,7 +595,7 @@ EXPECTED RESULT: A new pair will be inserted at the end
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Default value
          RESULT: 1.10101
       MAP AFTER: [0.247547:1.222], [0.347547:1.333], [0.447547:1.444], [0.547547:1.555], [0.647547:1.666], [0.747547:1.777], [0.847547:1.888], [0.947547:1.999], [0.104755:1.10101], [0.147547:1.10101]
 
@@ -608,7 +607,7 @@ EXPECTED RESULT: The new pair should be updated
 
         TESTING: Getting the value if exists, or a default value
        FUNCTION: getValueOrDefault(K,default)
-EXPECTED RESULT:
+EXPECTED RESULT: Actual value
          RESULT: 1.111
       MAP AFTER: [0.247547:1.222], [0.347547:1.333], [0.447547:1.444], [0.547547:1.555], [0.647547:1.666], [0.747547:1.777], [0.847547:1.888], [0.947547:1.999], [0.104755:1.10101], [0.147547:1.111]
 
@@ -629,4 +628,11 @@ EXPECTED RESULT: Map should be empty
 EXPECTED RESULT: Populated array
      MAP BEFORE: The keymap is empty, and as such no printable values are stored.
       MAP AFTER: [0.147547:1.111], [0.247547:1.222], [0.347547:1.333], [0.447547:1.444], [0.547547:1.555], [0.647547:1.666], [0.747547:1.777], [0.847547:1.888], [0.947547:1.999], [0.104755:1.10101]
+
+---------------------------------------------------
+
+
+D:\repositories\arraymap\arraymap-cpp\x64\Debug\arraymap-cpp.exe (process 13124) exited with code 0.
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+Press any key to close this window . . .
 ```

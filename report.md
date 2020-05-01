@@ -7,9 +7,9 @@ _Identify any weaknesses in your implementation and discuss improvements and alt
 
 ## Design Decisions
 
-My map was implemented as a single class which maps pointers of `K:V` values together in two arrays. 
+My map was implemented as a single class which maps pointers of `K:V` values together in two arrays.
 C++ has native support for abstract data types, which allowed me to introduce the `K:V` type-mappings with relative ease after desiging a map compatible with only a single datatype, however it also requires that all type definitions and code be kept in a header file, rather than the `.cpp` files.
-I have used the generic type mapping of `K` and `V` to represent Key and Value pairs, and the map should operate with any type `V`, and any type `K`, including custom classes which have a valid `==` operator, as long as they aren't `nullptr` values.   
+I have used the generic type mapping of `K` and `V` to represent Key and Value pairs, and the map should operate with any type `V`, and any type `K`, including custom classes which have a valid `==` operator, as long as they aren't `nullptr` values.  
 Some maps dissallow `NULL`, however I opted to not dissallow "null" values, as the C++ keyword `NULL` compiles to `0`. However the implementation will not accept insertion of `nullptr`s into the map.
 
 The map is iterable both forward and backward, and does so by implementing a `friend` class called `MapIter` - this allows the iterator to access the private and protected members of the `Keymap`, without having to request it through any `getter` methods. Due to the circular relationship between the iterator and the map, the `MapIter` is forward-declared in order to access the `Keymap`, and stores pointers to the map. The map itself also stores pointers to it's iterator.

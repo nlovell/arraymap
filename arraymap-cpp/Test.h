@@ -110,7 +110,7 @@ public:
 
 		//Delete a pair
 		printTest("Removing a pair", "removePair(K)", "Pair at position 0 will be removed");
-		km.removePair(kArr[0]);WS
+		km.removePair(kArr[0]);
 		ma();
 
 		//Update a removed pair - nothing should happen

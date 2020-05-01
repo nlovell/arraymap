@@ -509,7 +509,7 @@ public:
 		
 		for (int i = 0; i < lnth; ++i) {
 			if (!(km.keyArray[i] == keyArray[i]) && 
-			    !(km.valArray[i] == valArray[i])) {
+			!(km.valArray[i] == valArray[i])) {
 				return false;
 			}
 		} 
